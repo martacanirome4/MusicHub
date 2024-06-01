@@ -10,8 +10,11 @@ module.exports = {
   connectToDatabase: async () => {
     try {
       await client.connect();
-      dbConnection = client.db();
+      dbConnection = client.db('musicHub');
       console.log("Successfully connected to database");
+      const music = dbConnection.collection('music')
+      const result = await music.findOne();
+      console.log(result);
     } catch (e) {
       console.error(e);
       process.exit();
@@ -22,3 +25,4 @@ module.exports = {
     return dbConnection;
   }
 };
+

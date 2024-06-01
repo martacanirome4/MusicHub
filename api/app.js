@@ -5,19 +5,20 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+
 const conn = require('./db/conn');
 
 const app = express();
 
-/*conn.connectToDatabase();
+conn.connectToDatabase();
 
-app.listen(8000, ()=>{
-  console.log("Server running on port 8000");
-});*/
+app.listen(8088, ()=>{
+  console.log("Server running on port 8088");
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());

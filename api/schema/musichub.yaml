@@ -595,27 +595,6 @@ components:
           type: string
         album_name:
           type: string
-        album_artist_names:
-          type: array
-          items:
-            type: string
-        album_release_date:
-          type: string
-          format: date
-        album_image_url:
-          type: string
-        track_number:
-          type: integer
-        track_duration:
-          type: integer
-        artist_genres:
-          type: array
-          items:
-            type: string
-        album_genres:
-          type: array
-          items:
-            type: string
     Artista:
       type: object
       properties:
@@ -623,14 +602,11 @@ components:
           type: string
         artist_name:
           type: string
-        artist_image_url:
+        album_uri:
           type: string
-        artist_genres:
-          type: array
-          items:
-            type: string
-        artist_popularity:
-          type: integer
+        album_name:
+          type: string
+
     Album:
       type: object
       properties:
@@ -651,10 +627,6 @@ components:
           format: date
         album_image_url:
           type: string
-        album_genres:
-          type: array
-          items:
-            type: string
     Error:
       type: object
       properties:

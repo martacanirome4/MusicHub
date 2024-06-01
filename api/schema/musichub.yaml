@@ -1,0 +1,664 @@
+openapi: 3.0.3
+info:
+  title: API de Música
+  version: 0.0.1
+  description: |
+    Una API REST para gestionar canciones, artists y álbumes.
+servers:
+  - url: http://localhost:3000/api/v1
+
+paths:
+  # Rutas para el recurso "Tracks"
+  /tracks:
+    get:
+      summary: Obtener una lista de tracks.
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/SortTracksParam'
+      responses:
+        200:
+          description: Lista de tracks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tracks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Track'
+                  total_pages:
+                    type: integer
+                  current_page:
+                    type: integer
+                  total_items:
+                    type: integer
+        400:
+          description: Parámetros inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Crear un nuevo track.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Track'
+      responses:
+        201:
+          description: Track creado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Track'
+        400:
+          description: Datos del track inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tracks/{track_uri}:
+    get:
+      summary: Obtener detalles de un track específico.
+      parameters:
+        - $ref: '#/components/parameters/TrackUriParam'
+      responses:
+        200:
+          description: Detalles del track.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Track'
+        404:
+          description: Track no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Actualizar un track específico.
+      parameters:
+        - $ref: '#/components/parameters/TrackUriParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Track'
+      responses:
+        200:
+          description: Track actualizado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Track'
+        400:
+          description: Datos del track inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Track no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Eliminar un track específico.
+      parameters:
+        - $ref: '#/components/parameters/TrackUriParam'
+      responses:
+        204:
+          description: Track eliminado con éxito.
+        404:
+          description: Track no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # Rutas para el recurso "artists"
+  /artists:
+    get:
+      summary: Obtener una lista de artists.
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/SortArtistsParam'
+      responses:
+        200:
+          description: Lista de artists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  artists:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Artista'
+                  total_pages:
+                    type: integer
+                  current_page:
+                    type: integer
+                  total_items:
+                    type: integer
+        400:
+          description: Parámetros inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Crear un nuevo artista.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artista'
+      responses:
+        201:
+          description: Artista creado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artista'
+        400:
+          description: Datos del artista inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /artists/{artist_uri}:
+    get:
+      summary: Obtener detalles de un artista específico.
+      parameters:
+        - $ref: '#/components/parameters/ArtistUriParam'
+      responses:
+        200:
+          description: Detalles del artista.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artista'
+        404:
+          description: Artista no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Actualizar un artista específico.
+      parameters:
+        - $ref: '#/components/parameters/ArtistUriParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artista'
+      responses:
+        200:
+          description: Artista actualizado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artista'
+        400:
+          description: Datos del artista inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Artista no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Eliminar un artista específico.
+      parameters:
+        - $ref: '#/components/parameters/ArtistUriParam'
+      responses:
+        204:
+          description: Artista eliminado con éxito.
+        404:
+          description: Artista no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /artists/{artist_uri}/albums:
+    get:
+      summary: Obtener álbumes de un artista específico.
+      parameters:
+        - $ref: '#/components/parameters/ArtistUriParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/SortAlbumsParam'
+      responses:
+        200:
+          description: Lista de álbumes del artista.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  albums:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Album'
+                  total_pages:
+                    type: integer
+                  current_page:
+                    type: integer
+                  total_items:
+                    type: integer
+        404:
+          description: Artista no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /albums/{album_uri}/canciones:
+    get:
+      summary: Obtener la lista de canciones de un álbum.
+      parameters:
+        - $ref: '#/components/parameters/AlbumUriParam'
+      responses:
+        200:
+          description: Lista de canciones del álbum.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Track'
+        404:
+          description: Álbum no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # Rutas para el recurso "Álbumes"
+  /albums:
+    get:
+      summary: Obtener una lista de álbumes.
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/SortAlbumsParam'
+      responses:
+        200:
+          description: Lista de álbumes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  albums:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Album'
+                  total_pages:
+                    type: integer
+                  current_page:
+                    type: integer
+                  total_items:
+                    type: integer
+        400:
+          description: Parámetros inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Crear un nuevo álbum.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Album'
+      responses:
+        201:
+          description: Álbum creado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Album'
+        400:
+          description: Datos del álbum inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /albums/{album_uri}:
+    get:
+      summary: Obtener detalles de un álbum específico.
+      parameters:
+        - $ref: '#/components/parameters/AlbumUriParam'
+      responses:
+        200:
+          description: Detalles del álbum.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Album'
+        404:
+          description: Álbum no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Actualizar un álbum específico.
+      parameters:
+        - $ref: '#/components/parameters/AlbumUriParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Album'
+      responses:
+        200:
+          description: Álbum actualizado con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Album'
+        400:
+          description: Datos del álbum inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Álbum no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Eliminar un álbum específico.
+      parameters:
+        - $ref: '#/components/parameters/AlbumUriParam'
+      responses:
+        204:
+          description: Álbum eliminado con éxito.
+        404:
+          description: Álbum no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Número de página para la paginación (empieza en 1).
+      required: false
+      schema:
+        type: integer
+        default: 1
+    LimitParam:
+      name: limit
+      in: query
+      description: Número máximo de elementos por página.
+      required: false
+      schema:
+        type: integer
+        default: 10
+    SortTracksParam:
+      name: sort
+      in: query
+      description: Criterio de ordenamiento para los tracks (p.ej., 'track_name', 'artist_name').
+      required: false
+      schema:
+        type: string
+        default: 'track_name'
+    SortArtistsParam:
+      name: sort
+      in: query
+      description: Criterio de ordenamiento para los artists (p.ej., 'artist_name').
+      required: false
+      schema:
+        type: string
+        default: 'artist_name'
+    SortAlbumsParam:
+      name: sort
+      in: query
+      description: Criterio de ordenamiento para los álbumes (p.ej., 'album_name', 'release_date').
+      required: false
+      schema:
+        type: string
+        default: 'album_name'
+    TrackUriParam:
+      name: track_uri
+      in: path
+      description: URI del track.
+      required: true
+      schema:
+        type: string
+        example: "spotify:track:1XAZlnVtthcDZt2NI1Dtxo"
+    ArtistUriParam:
+      name: artist_uri
+      in: path
+      description: URI del artista.
+      required: true
+      schema:
+        type: string
+        example: "spotify:artist:2rm..."
+    AlbumUriParam:
+      name: album_uri
+      in: path
+      description: URI del álbum.
+      required: true
+      schema:
+        type: string
+        example: "spotify:album:4MC0ZjNtVP1nDD5lsLxFjc"
+
+  schemas:
+    Track:
+      type: object
+      properties:
+        track_uri:
+          type: string
+        track_name:
+          type: string
+        artist_uris:
+          type: array
+          items:
+            type: string
+            example: /artists/{artist_uri}
+        artist_names:
+          type: array
+          items:
+            type: string
+        album_uri:
+          type: string
+        album_name:
+          type: string
+        album_artist_names:
+          type: array
+          items:
+            type: string
+        album_release_date:
+          type: string
+          format: date
+        album_image_url:
+          type: string
+        track_number:
+          type: integer
+        track_duration:
+          type: integer
+        artist_genres:
+          type: array
+          items:
+            type: string
+        album_genres:
+          type: array
+          items:
+            type: string
+    Artista:
+      type: object
+      properties:
+        artist_uri:
+          type: string
+        artist_name:
+          type: string
+        artist_image_url:
+          type: string
+        artist_genres:
+          type: array
+          items:
+            type: string
+        artist_popularity:
+          type: integer
+    Album:
+      type: object
+      properties:
+        album_uri:
+          type: string
+        album_name:
+          type: string
+        artist_uris:
+          type: array
+          items:
+            type: string
+        artist_names:
+          type: array
+          items:
+            type: string
+        release_date:
+          type: string
+          format: date
+        album_image_url:
+          type: string
+        album_genres:
+          type: array
+          items:
+            type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string

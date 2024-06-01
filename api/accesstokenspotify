@@ -1,0 +1,5 @@
+curl -X POST "https://accounts.spotify.com/api/token" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=client_credentials&client_id=37b68cea9e994cd5ab2bf21b470506bb&client_secret=37fcb2ef178643608029090638e5ca4d"
+
+{"access_token":"BQBEfjel2JP5inXoeF18F94hk6KnTLlueL0c2PM8Znh0W1g1cAcVclfqBx6YZqCoBIf2a9c8L0kzvpcwFsxfUOUzSMMwA8BipASKlc-MF-LRaJsPOgg",
+"token_type":"Bearer",
+"expires_in":3600}

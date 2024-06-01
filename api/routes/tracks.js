@@ -27,12 +27,15 @@ router.get('/', async (req, res) => {
   let next = req.query.next;
   let query = {}
   if (next){
-    query = {_id: {$lt: new ObjectId(next)}}
+    query = {_id: {$lt: new ObjectId}}
+  }
+  const options = {
+    projection: {_id: 0}
   }
   const dbConnect = dbo.getDb();
   let results = await dbConnect
     .collection('music')
-    .find(query)
+    .find(query, options)
     .sort({_id: -1})
     .limit(limit)
     .toArray()

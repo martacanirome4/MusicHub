@@ -124,7 +124,8 @@
                         <p><strong>URI:</strong> <%= album.album_uri %></p>
                         <p><strong>Artista:</strong> <%= album.artist_names.join(', ') %></p>
                         <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
-                        <p><strong>URL de la imagen:</strong> <%= album.album_image_url %></p>
+                        <!-- Visualización de la imagen del álbum -->
+                        <img src="<%= album.album_image_url %>" alt="<%= album.album_name %>" style="max-width: 200px;">
                         <!-- Aquí puedes incluir más propiedades según tus necesidades -->
                     </li>
                 <% }); %>
@@ -146,18 +147,5 @@
             sidebar.classList.toggle('show');
         });
     </script>
-
-<html>
-<head>
-    <title>Albums</title>
-</head>
-<body>
-    <h1>Albums</h1>
-    <ul>
-        <% albums.forEach(album => { %>
-            <li><%= album.name %> by <%= album.artist %></li>
-        <% }); %>
-    </ul>
-
 </body>
 </html>

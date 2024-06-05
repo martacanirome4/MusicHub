@@ -1,3 +1,4 @@
+// file: api/app.js
 require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
@@ -13,6 +14,8 @@ const albumsRouter = require('./routes/albums');
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
 const spotifyTracks = require('./routes/spotifyTracks');
+const axios = require('axios');
+const weatherRouter = require('./routes/weather');
 
 const base_uri = process.env.BASE_URI
 
@@ -46,6 +49,7 @@ app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
 app.use(base_uri + '/spotify-tracks', spotifyTracks);
+app.use(base_uri + '/weather', weatherRouter);
 
 // Configuración de la API de Spotify
 const spotifyApi = new SpotifyWebApi({
@@ -114,5 +118,6 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
 
 module.exports = app;

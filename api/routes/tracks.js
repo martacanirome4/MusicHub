@@ -5,19 +5,6 @@ const dbo = require('../db/conn');
 const ObjectId = require('mongodb').ObjectId;
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS);
 
-//getPeliculas()
-/*
-router.get('/', async (req, res) => {
-  const dbConnect = dbo.getDb();
-  let results = await dbConnect
-    .collection('peliculas')
-    .find({})
-    .limit(MAX_RESULTS)
-    .toArray()
-    .catch(err => res.status(400).send('Error al buscar películas'));
-  res.json(results).status(200);
-});
-*/
 
 router.get('/', async (req, res) => {
   let limit = MAX_RESULTS;
@@ -44,7 +31,6 @@ router.get('/', async (req, res) => {
   res.json({results, next}).status(200);
 });
 
-//getPeliculaById()
 router.get('/:id', async (req, res) => {
   const dbConnect = dbo.getDb();
   let query = {_id: new ObjectId(req.params.id)};

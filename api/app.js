@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -6,16 +7,13 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const tracksRouter = require('./routes/tracks');
-require('dotenv').config();
-const base_uri = process.env.BASE_URI
 const albumsRouter = require('./routes/albums');
-
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
 
-const app = express();
+const base_uri = process.env.BASE_URI
 
-require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
+const app = express();
 
 conn.connectToDatabase();
 

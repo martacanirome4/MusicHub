@@ -146,5 +146,18 @@
             sidebar.classList.toggle('show');
         });
     </script>
+
+<html>
+<head>
+    <title>Albums</title>
+</head>
+<body>
+    <h1>Albums</h1>
+    <ul>
+        <% albums.forEach(album => { %>
+            <li><%= album.name %> by <%= album.artist %></li>
+        <% }); %>
+    </ul>
+
 </body>
 </html>

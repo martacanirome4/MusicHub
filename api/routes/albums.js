@@ -39,9 +39,6 @@ router.get('/', async (req, res) => {
 });
 
 
-
-
-
 // Ruta para obtener detalles de un álbum específico
 router.get('/:album_uri', async (req, res) => {
   const albumUri = decodeURIComponent(req.params.album_uri); // Decodificar el URI del álbum

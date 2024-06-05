@@ -1,0 +1,39 @@
+<!-- chat.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <!-- Aquí puedes incluir cualquier CSS o scripts adicionales que necesites -->
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button id="send-btn">Send</button>
+    </div>
+
+    <script>
+        // Función para enviar un mensaje al servidor y mostrar la respuesta en el chat
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML += `<div>User: ${userInput}</div>`;
+
+            const response = await fetch('/send-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            });
+            const data = await response.json();
+            chatMessages.innerHTML += `<div>Bot: ${data.message}</div>`;
+        }
+
+        // Agregar un evento de clic al botón de enviar
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+    </script>
+</body>
+</html>

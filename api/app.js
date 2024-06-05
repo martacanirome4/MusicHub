@@ -69,6 +69,9 @@ spotifyApi.clientCredentialsGrant()
     });
 
 // Función para manejar el chat
+app.get('/api/v1/chat', (req, res) => {
+    res.render('chat'); // Esto renderizará la vista chat.ejs
+});
 async function chat(userMessage) {
     const client = new openAI.OpenAI({
         apiKey: process.env.OPENAI_API_KEY

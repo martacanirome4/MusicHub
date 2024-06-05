@@ -79,4 +79,47 @@ router.delete('/:album_uri', async (req, res) => {
     .catch(err => res.status(400).send('Error al eliminar el álbum'));
 });
 
+
+// Ruta para obtener detalles del artista asociado a un álbum específico
+router.get('/:album_uri/artist', async (req, res) => {
+    const albumUri = decodeURIComponent(req.params.album_uri); // Decodificar el URI del álbum
+    const dbConnect = dbo.getDb();
+    const album = await dbConnect
+      .collection('music')
+      .findOne({album_uri: albumUri})
+      .catch(err => res.status(400).send('Error al buscar el álbum'));
+    if (!album) {
+      return res.status(404).json({message: 'Álbum no encontrado'});
+    }
+    // Extraer las propiedades del artista del documento del álbum
+    const artistDetails = {
+      artist_uris: album.artist_uris,
+      artist_names: album.artist_names
+      // Agrega más propiedades del artista si es necesario
+    };
+    res.json(artistDetails).status(200);
+  });
+  
+  // Ruta para obtener todas las canciones asociadas a un álbum específico
+router.get('/:album_uri/tracks', async (req, res) => {
+    const albumUri = decodeURIComponent(req.params.album_uri); // Decodificar el URI del álbum
+    const dbConnect = dbo.getDb();
+    const tracks = await dbConnect
+      .collection('music')
+      .find({album_uri: albumUri})
+      .toArray()
+      .catch(err => res.status(400).send('Error al buscar las canciones del álbum'));
+    if (!tracks || tracks.length === 0) {
+      return res.status(404).json({message: 'No se encontraron canciones asociadas al álbum'});
+    }
+    // Extraer solo la información relevante de cada canción
+    const tracksDetails = tracks.map(track => ({
+      track_uri: track.track_uri,
+      track_name: track.track_name,
+      // Puedes agregar más propiedades aquí según tus necesidades
+    }));
+    res.json(tracksDetails).status(200);
+  });
+  
+
 module.exports = router;

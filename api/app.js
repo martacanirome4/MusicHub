@@ -8,6 +8,7 @@ const usersRouter = require('./routes/users');
 const tracksRouter = require('./routes/tracks');
 require('dotenv').config();
 const base_uri = process.env.BASE_URI
+const albumsRouter = require('./routes/albums');
 
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
@@ -30,6 +31,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter)
+app.use('/tracks', tracksRouter)
+app.use('/albums', albumsRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -19,6 +19,7 @@
     "morgan": "~1.9.1",
     "openai": "^4.48.2",
     "openapi": "^1.0.1",
-    "spotify-web-api-node": "^5.0.2"
+    "spotify-web-api-node": "^5.0.2",
+    "xml2js": "^0.6.2"
   }
 }

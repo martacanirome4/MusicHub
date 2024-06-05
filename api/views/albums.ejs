@@ -1,4 +1,152 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Álbumes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+        }
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            transition: left 0.3s;
+            z-index: 1000;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .navbar-toggle {
+            background-color: transparent;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2000;
+            font-size: 20px;
+        }
+        .navbar-toggle:hover {
+            color: #9b3ff7;
+        }
+        .container {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        h1 {
+            color: #9f59e4;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        li {
+            background-color: #444;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            padding: 15px;
+        }
+        li:hover {
+            background-color: #555;
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        p {
+            margin: 0;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .no-albums {
+            text-align: center;
+            color: #777;
+        }
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+        /* Contenedor adicional para el encabezado */
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px; /* Margen inferior añadido */
+        }
+        .header-container h2 {
+            font-size: 24px; /* Tamaño de fuente personalizado */
+            margin-top: 55px; /* Margen superior añadido */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="header-container"> <!-- Contenedor adicional -->
+            <h2>MusicHub</h2>
+        </div>
+        <ul>
+            <li><a href="#">Álbumes</a></li>
+            <li><a href="#">Canciones</a></li>
+            <!-- Agrega más opciones de navegación según sea necesario -->
+        </ul>
+    </div>
+    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+    <div class="container">
+        <h1>Lista de Álbumes</h1>
+        <% if (albums.length > 0) { %>
+            <ul>
+                <% albums.forEach(album => { %>
+                    <li>
+                        <h2><%= album.album_name %></h2>
+                        <p><strong>URI:</strong> <%= album.album_uri %></p>
+                        <p><strong>Artista:</strong> <%= album.artist_names.join(', ') %></p>
+                        <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
+                        <p><strong>URL de la imagen:</strong> <%= album.album_image_url %></p>
+                        <!-- Aquí puedes incluir más propiedades según tus necesidades -->
+                    </li>
+                <% }); %>
+            </ul>
+            <% if (next) { %>
+                <div style="text-align: center;">
+                    <button onclick="window.location.href='/api/v1/albums?next=<%= next %>'">Siguiente</button>
+                </div>
+            <% } %>
+        <% } else { %>
+            <p class="no-albums">No se encontraron álbumes.</p>
+        <% } %>
+    </div>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const navbarToggle = document.getElementById('navbar-toggle');
+        
+        navbarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+    </script>
+
 <html>
 <head>
     <title>Albums</title>
@@ -10,5 +158,6 @@
             <li><%= album.name %> by <%= album.artist %></li>
         <% }); %>
     </ul>
+
 </body>
 </html>

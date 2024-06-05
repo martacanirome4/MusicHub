@@ -1,4 +1,4 @@
-const getSpotifyToken = require('./utils/spotifyAuth');
+const getSpotifyToken = require('../utils/spotifyAuth');
 
 (async () => {
   try {

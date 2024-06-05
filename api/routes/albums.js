@@ -7,38 +7,40 @@ const MAX_RESULTS = parseInt(process.env.MAX_RESULTS);
 
 // Ruta para obtener todos los álbumes
 router.get('/', async (req, res) => {
-  let limit = MAX_RESULTS;
-  if (req.query.limit){
-    limit = Math.min(parseInt(req.query.limit), MAX_RESULTS);
-  }
+  // Obtener el valor de `next` de la consulta
   let next = req.query.next;
-  let query = {}
-  if (next){
-    query = {_id: {$lt: new ObjectId(next)}}
+  let query = {};
+  
+  // Si `next` está presente, construir la consulta para obtener los álbumes siguientes
+  if (next) {
+      query = { _id: { $lt: new ObjectId(next) } };
   }
+
   const options = {
-    projection: {_id: 0}
-  }
+      projection: { _id: 0 }
+  };
+  
   const dbConnect = dbo.getDb();
+  
+  // Realizar la consulta a la base de datos usando el valor de `next`
   let results = await dbConnect
-    .collection('music')
-    .find({album_uri: {$exists: true}})
-    .sort({_id: -1})
-    .limit(limit)
-    .toArray()
-    .catch(err => res.status(400).send('Error al buscar álbumes'));
-  next = results.length === limit ? results[results.length - 1]._id : null;
-  res.json({results, next}).status(200);
+      .collection('music')
+      .find(query)
+      .sort({ _id: -1 })
+      .limit(MAX_RESULTS) // Usar MAX_RESULTS para limitar la cantidad de resultados
+      .toArray()
+      .catch(err => res.status(400).send('Error al buscar álbumes'));
+  
+  // Calcular el valor de `next` para el siguiente conjunto de álbumes
+  next = results.length > 0 ? results[results.length - 1]._id : null;
+
+  // Renderizar la plantilla EJS con los resultados de la consulta
+  res.render('albums', { albums: results, next: next });
 });
 
-router.post('/', async (req, res) => {
-  const dbConnect = dbo.getDb();
-  console.log(req.body);
-  let result = await dbConnect
-    .collection('music')
-    .insertOne(req.body);
-  res.status(201).send(result);
-});
+
+
+
 
 // Ruta para obtener detalles de un álbum específico
 router.get('/:album_uri', async (req, res) => {

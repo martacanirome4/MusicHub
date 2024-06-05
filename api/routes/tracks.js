@@ -26,17 +26,20 @@ router.get('/', async (req, res) => {
     .sort({_id: -1})
     .limit(limit)
     .toArray()
-    .catch(err => res.status(400).send('Error al buscar music'));
+    .catch(err => res.status(400).send('Error al buscar las canciones'));
   next = results.length == limit ? results[results.length - 1]._id : null;
   res.json({results, next}).status(200);
 });
 
 router.get('/:id', async (req, res) => {
   const dbConnect = dbo.getDb();
-  let query = {_id: new ObjectId(req.params.id)};
+  let query = {track_uri: {$eq: decodeURIComponent(req.params.id)}};
+  let projection = {_id: 0} 
   let result = await dbConnect
     .collection('music')
-    .findOne(query);
+    .find(query)
+    .project(projection)
+    .toArray();
   if (!result){
     res.send("Not found").status(404);
   } else {

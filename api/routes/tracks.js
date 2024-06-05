@@ -69,7 +69,7 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  const query = { _id: new ObjectId(req.params.id) };
+  const query = {track_uri: {$eq: decodeURIComponent(req.params.id)}};
   const dbConnect = dbo.getDb();
   let result = await dbConnect
     .collection('music')

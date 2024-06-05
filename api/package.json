@@ -15,6 +15,8 @@
     "jade": "^0.29.0",
     "mongodb": "^6.7.0",
     "morgan": "~1.9.1",
+    "openai": "^4.48.2",
+    "openapi": "^1.0.1",
     "spotify-web-api-node": "^5.0.2"
   }
 }

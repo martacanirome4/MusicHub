@@ -42,7 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Rutas
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/tracks', tracksRouter);
+app.use(base_uri + '/tracks', tracksRouter);
+app.use(base_uri + '/albums', albumsRouter);
 
 // Configuración de la API de Spotify
 const spotifyApi = new SpotifyWebApi({

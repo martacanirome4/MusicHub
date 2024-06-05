@@ -31,6 +31,14 @@ router.get('/', async (req, res) => {
   res.json({results, next}).status(200);
 });
 
+router.post('/', async (req, res) => {
+  const dbConnect = dbo.getDb();
+  console.log(req.body);
+  let result = await dbConnect
+    .collection('music')
+    .insertOne(req.body);
+  res.status(201).send(result);
+});
 
 // Ruta para obtener detalles de un álbum específico
 router.get('/:album_uri', async (req, res) => {

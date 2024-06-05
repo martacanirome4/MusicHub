@@ -12,6 +12,7 @@ const dotenv = require('dotenv');
 const albumsRouter = require('./routes/albums');
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
+const spotifyTracks = require('./routes/spotifyTracks');
 
 const base_uri = process.env.BASE_URI
 
@@ -44,6 +45,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
+app.use(base_uri + '/spotify-tracks', spotifyTracks);
 
 // Configuración de la API de Spotify
 const spotifyApi = new SpotifyWebApi({

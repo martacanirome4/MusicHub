@@ -6,6 +6,8 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const tracksRouter = require('./routes/tracks');
+require('dotenv').config();
+const base_uri = process.env.BASE_URI
 
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
@@ -15,10 +17,6 @@ const app = express();
 require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
 
 conn.connectToDatabase();
-
-app.listen(8088, ()=>{
-  console.log("Server running on port 8088");
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/tracks', tracksRouter)
+app.use(base_uri + '/tracks', tracksRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

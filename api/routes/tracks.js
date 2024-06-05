@@ -47,7 +47,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-//addPelicula()
 router.post('/', async (req, res) => {
   const dbConnect = dbo.getDb();
   console.log(req.body);
@@ -57,13 +56,10 @@ router.post('/', async (req, res) => {
   res.status(201).send(result);
 });
 
-//updatePeliculaById()
 router.put('/:id', async (req, res) => {
-  const query = {_id: new ObjectId(req.params.id)};
+  const query = {track_uri: {$eq: (decodeURIComponent(req.params.id))}};
   const update = {$set:{
-    titulo: req.body.titulo,
-    descripcion: req.body.resumen,
-    duracion: req.body.duracion
+    track_name: req.body.track_name,
   }};
   const dbConnect = dbo.getDb();
   let result = await dbConnect
@@ -72,7 +68,6 @@ router.put('/:id', async (req, res) => {
   res.status(200).send(result);
 });
 
-//deletePeliculaById()
 router.delete('/:id', async (req, res) => {
   const query = { _id: new ObjectId(req.params.id) };
   const dbConnect = dbo.getDb();

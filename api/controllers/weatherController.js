@@ -1,28 +1,28 @@
 // file: api/controllers/weatherController.js
-const axios = require('axios');
-const xml2js = require('xml2js');
-require('dotenv').config();
+const getWeatherData = require('../utils/weatherAuth');
 
-const getWeatherData = async (req, res) => {
-  const city = req.params.city;
+const getWeather = async (req, res) => {
+  const city = req.query.city;
+
+  if (!city) {
+    return res.status(400).json({ error: 'City is required' });
+  }
 
   try {
-    const response = await axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&mode=xml&appid=${process.env.OPENWEATHERMAP_API_KEY}`);
-    const xml = response.data;
-
-    // Convert XML to JSON
-    xml2js.parseString(xml, (err, result) => {
-      if (err) {
-        return res.status(500).json({ message: 'Error parsing XML' });
-      }
-      res.json(result);
+    const weatherData = await getWeatherData(city);
+    res.json({
+      city: weatherData.current.city[0].$.name,
+      temperature: weatherData.current.temperature[0].$.value,
+      description: weatherData.current.weather[0].$.value,
+      humidity: weatherData.current.humidity[0].$.value,
+      wind_speed: weatherData.current.wind[0].speed[0].$.value,
     });
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    res.status(500).json({ message: 'Error fetching weather data from OpenWeatherMap' });
+    res.status(500).json({ error: 'Error fetching weather data' });
   }
 };
 
 module.exports = {
-  getWeatherData
+  getWeather
 };

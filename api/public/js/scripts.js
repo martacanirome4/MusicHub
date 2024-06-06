@@ -6,9 +6,43 @@
     window.location.href = `/api/v1/albums/${encodeURIComponent(query)}`;
 };
 
-document.getElementById('deleteForm').onsubmit = async function(event) {
+document.getElementById('putForm').onsubmit = async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario
 
+    const albumUri = document.getElementById('album_put').value; // URI actual del álbum
+    const albumName = document.getElementById('album_name_put').value;
+    const newAlbumUri = document.getElementById('album_uri_put').value; // Nueva URI del álbum
+    const artistNames = document.getElementById('artist_names_put').value;
+    const albumReleaseDate = document.getElementById('album_release_date_put').value;
+    const albumImageUrl = document.getElementById('album_image_url_put').value;
+
+    const formData = {
+        album_uri: newAlbumUri,
+        album_name: albumName,
+        artist_names: artistNames.split(',').map(name => name.trim()),
+        album_release_date: albumReleaseDate,
+        album_image_url: albumImageUrl
+    };
+
+    try {
+        const response = await fetch(`/api/v1/albums/${albumUri}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        console.log(albumUri)
+        // Redirigir a la página de álbumes después de eliminar
+        window.location.href = '/api/v1/albums';
+    } catch (error) {
+        console.error('Error:', error);
+        // Manejar el error si la solicitud falla
+    }
+};
+
+document.getElementById('deleteForm').onsubmit = async function(event) {
+    event.preventDefault(); // Prevenir el envío del formulario
     const albumId = document.getElementById('album_id').value; // Obtener el ID del álbum
     // Enviar la solicitud DELETE
     try {
@@ -19,7 +53,7 @@ document.getElementById('deleteForm').onsubmit = async function(event) {
             },
             body: JSON.stringify({ album_id: albumId })
         });
-        
+        console.log(albumId)
         // Redirigir a la página de álbumes después de eliminar
         window.location.href = '/api/v1/albums';
     } catch (error) {
@@ -35,42 +69,4 @@ navbarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('show');
 });
 
-document.getElementById('updateForm').onsubmit = async function(event) {
-    event.preventDefault(); // Prevenir el envío del formulario
-
-    // Obtener los datos del formulario
-    const albumName = document.getElementById('album_name').value;
-    const albumUri = document.getElementById('album_uri').value;
-    const artistNames = document.getElementById('artist_names').value;
-    const albumReleaseDate = document.getElementById('album_release_date').value;
-    const albumImageUrl = document.getElementById('album_image_url').value;
-
-    const formData = {
-        album_name: albumName,
-        artist_names: artistNames.split(',').map(name => name.trim()),
-        album_release_date: albumReleaseDate,
-        album_image_url: albumImageUrl
-    };
-
-    // Enviar la solicitud PUT
-    try {
-        const response = await fetch(`/api/v1/albums/${albumUri}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        });
-        
-        if (!response.ok) {
-            throw new Error('Error al actualizar el álbum');
-        }
-        
-        // Redirigir a la página de álbumes después de actualizar
-        window.location.href = '/api/v1/albums';
-    } catch (error) {
-        console.error('Error:', error);
-        // Manejar el error si la solicitud falla
-    }
-};
 

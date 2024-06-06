@@ -121,29 +121,5 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-function addAlbum() {
-    // Obtener los datos del formulario
-    const formData = new FormData(document.getElementById("addAlbumForm"));
-
-    // Enviar la solicitud POST al servidor utilizando AJAX
-    fetch('/api/v1/albums', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al añadir el álbum');
-        }
-        return response.json();
-    })
-    .then(album => {
-        // Actualizar la página o realizar alguna acción adicional
-        location.reload(); // Actualizar la página después de añadir el álbum
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Manejar el error si la solicitud falla
-    });
-}
 
 module.exports = app;

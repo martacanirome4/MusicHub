@@ -74,6 +74,7 @@ router.put('/:album_uri', async (req, res) => {
   const albumUri = decodeURIComponent(req.params.album_uri); // Decodificar el URI del álbum
   const updatedAlbum = req.body;
   const dbConnect = dbo.getDb();
+  console.log("aqui")
   await dbConnect
     .collection('music')
     .updateOne({album_uri: albumUri}, {$set: updatedAlbum})
@@ -90,6 +91,8 @@ router.put('/:album_uri', async (req, res) => {
 router.delete('/:album_uri', async (req, res) => {
   const albumUri = decodeURIComponent(req.params.album_uri);
   const dbConnect = dbo.getDb();
+  console.log("aqui3")
+
   try {
     const result = await dbConnect.collection('music').deleteOne({ album_uri: albumUri });
     if (result.deletedCount === 0) {

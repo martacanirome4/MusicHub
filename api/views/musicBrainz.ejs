@@ -11,6 +11,8 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            background-color: #121212; /* Fondo negro/gris */
+            color: #1DB954; /* Verde Spotify */
         }
         .sidebar {
             width: 200px;
@@ -18,17 +20,18 @@
             background-color: #333;
             position: fixed;
             top: 0;
-            left: 0;
+            left: -200px; /* Oculta la barra lateral inicialmente */
             transition: left 0.3s;
             z-index: 1000;
             overflow-y: auto;
+            padding-top: 20px;
         }
         .sidebar.show {
             left: 0;
         }
         .navbar-toggle {
             background-color: transparent;
-            color: #fff;
+            color: #1DB954;
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -39,15 +42,39 @@
             font-size: 20px;
         }
         .navbar-toggle:hover {
-            color: #9b3ff7;
+            color: #1ED760;
+        }
+        .sidebar h2 {
+            color: #1DB954;
+            text-align: center;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar ul li a:hover {
+            background-color: #444;
         }
         .container {
-            margin-left: 220px;
+            margin-left: 20px;
             padding: 20px;
         }
         .main-content {
             max-width: 800px;
             margin: auto;
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
         }
         pre {
             background: #f4f4f4;
@@ -64,13 +91,13 @@
         }
         button {
             padding: 10px 20px;
-            background-color: #333;
+            background-color: #1DB954;
             color: white;
             border: none;
             cursor: pointer;
         }
         button:hover {
-            background-color: #555;
+            background-color: #1ED760;
         }
     </style>
 </head>
@@ -80,6 +107,7 @@
             <h2>MusicHub</h2>
         </div>
         <ul>
+            <li><a href="/api/v1/">Inicio</a></li>
             <li><a href="/api/v1/albums">Álbumes</a></li>
             <li><a href="/api/v1/tracks">Canciones</a></li>
             <li><a href="/api/v1/chat">Chat</a></li>
@@ -90,7 +118,7 @@
     <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
     <div class="container">
         <div class="main-content">
-            <h1>Obtén información de un artista</h1>
+            <h1>Obtén información de MusicBrainz de un artista</h1>
             <form id="search-form">
                 <label for="artist">Introduce el nombre del artista:</label>
                 <input type="text" id="artist-name" name="artist-name" required>
@@ -134,6 +162,15 @@
             const formattedXml = formatXml(xmlData);
 
             document.getElementById('artist-info').innerHTML = `<pre>${formattedXml}</pre>`;
+        });
+
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            } else {
+                sidebar.classList.add('show');
+            }
         });
     </script>
 </body>

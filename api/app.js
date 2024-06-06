@@ -1,4 +1,3 @@
-// file: api/app.js
 require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
@@ -17,7 +16,6 @@ const weatherRoutes = require('./routes/weather');
 const apiErrorHandler = require('./middleware/apiErrorHandler');
 const spotifyRouter = require('./routes/spotify');
 const musicBrainzRouter = require('./routes/musicBrainz');
-const spotifyRouter = require('./routes/artists');
 const base_uri = process.env.BASE_URI;
 
 const app = express();
@@ -37,11 +35,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/', indexRouter);
+app.use(base_uri + '/', indexRouter); // Ajustar la ruta para manejar el prefijo
 app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
-app.use(base_uri + '/artists', albumsRouter);
 app.use(base_uri + '/spotify-tracks', spotifyTracks);
 app.use(base_uri + '/weather', weatherRoutes);
 app.use(base_uri + '/spotify', spotifyRouter);
@@ -67,7 +64,7 @@ spotifyApi.clientCredentialsGrant()
     });
 
 // Chat function
-app.get('/api/v1/chat', (req, res) => {
+app.get(base_uri + '/chat', (req, res) => {
     res.render('chat');
 });
 
@@ -92,7 +89,7 @@ async function chat(userMessage) {
     }
 }
 
-app.post('/send-message', async (req, res) => {
+app.post(base_uri + '/send-message', async (req, res) => {
     const userMessage = req.body.message;
 
     try {
@@ -104,7 +101,7 @@ app.post('/send-message', async (req, res) => {
     }
 });
 
-app.get('/chat', (req, res) => {
+app.get(base_uri + '/chat', (req, res) => {
     res.render('chat');
 });
 
@@ -117,7 +114,6 @@ app.use(function(err, req, res, next) {
     console.error(err.stack);
 });
 
-console.log('App running on url: http://localhost:3000/api/v1/');
+console.log('App running on url: http://localhost:3000' + base_uri);
 
 module.exports = app;
-

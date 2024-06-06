@@ -146,4 +146,6 @@ function addAlbum() {
     });
 }
 
+console.log('App running on url: http://localhost:3000/api/v1/');
+
 module.exports = app;

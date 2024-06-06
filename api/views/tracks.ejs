@@ -43,14 +43,14 @@
         </div>
         <div class="form-list">
             <div class="form-container">
-                <h2>(GET) Barra de Búsqueda</h2>
+                <h2>(GET) Buscar Canción por URI</h2>
                 <!-- El formulario no necesita action ya que se manejará mediante JavaScript -->
                 <form id="searchForm" method="GET">
-                    <label for="search_query">Buscar álbum por URI:</label>
+                    <label for="search_query">Buscar canción por URI:</label>
                     <input type="text" id="search_query" name="search_query" required>
                     <button type="submit">Buscar</button>
                 </form>
-            </div>
+            </div>            
             <div class="form-container">
                 <h2>(POST) Añadir Canción</h2>
                 <form action="/api/v1/albums" method="POST">

@@ -36,9 +36,9 @@ router.get('/', async (req, res) => {
   }
 });
 
-//BUSCAR POR URI
+// Ruta para obtener detalles de una canción específica
 router.get('/:track_uri', async (req, res) => {
-  const trackUri = decodeURIComponent(req.params.track_uri); // Corregido para usar 'track_uri' en lugar de 'album_uri'
+  const trackUri = decodeURIComponent(req.params.track_uri);
   const dbConnect = dbo.getDb();
   const limit = 1; // Limita la cantidad de resultados por página
   const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
@@ -65,6 +65,7 @@ router.get('/:track_uri', async (req, res) => {
       res.status(500).send('Error al buscar la canción'); // Corregido el mensaje
   }
 });
+
 
 router.post('/', async (req, res) => {
   const dbConnect = dbo.getDb();

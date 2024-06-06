@@ -53,22 +53,19 @@
             </div>            
             <div class="form-container">
                 <h2>(POST) Añadir Canción</h2>
-                <form action="/api/v1/albums" method="POST">
-                    <label for="album_name">Nombre del Álbum:</label>
-                    <input type="text" id="album_name" name="album_name" required>
-
-                    <label for="album_uri">URI del Álbum:</label>
-                    <input type="text" id="album_uri" name="album_uri" required>
-
+                <form id="addTrackForm" method="POST">
+                    <label for="track_name">Nombre de la Canción:</label>
+                    <input type="text" id="track_name" name="track_name" required>
+            
+                    <label for="track_uri">URI de la Canción:</label>
+                    <input type="text" id="track_uri" name="track_uri" required>
+            
                     <label for="artist_names">Nombres de los Artistas:</label>
                     <input type="text" id="artist_names" name="artist_names" required>
-
-                    <label for="album_release_date">Fecha de Lanzamiento:</label>
-                    <input type="date" id="album_release_date" name="album_release_date" required>
-
-                    <label for="album_image_url">URL de la Imagen del Álbum:</label>
-                    <input type="text" id="album_image_url" name="album_image_url" required>
-
+            
+                    <label for="album_name">Nombre del Álbum:</label>
+                    <input type="text" id="album_name" name="album_name" required>
+            
                     <button type="submit">Añadir Canción</button>
                 </form>
             </div>

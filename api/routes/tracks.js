@@ -69,11 +69,23 @@ router.get('/:track_uri', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  let newTrack = req.body; // Obtener los datos del formulario
+  console.log(newTrack);
+
+  // Convertir artist_names a un array si es una cadena
+  if (typeof newTrack.artist_names === 'string') {
+      newTrack.artist_names = newTrack.artist_names.split(',').map(name => name.trim());
+  } else if (!Array.isArray(newTrack.artist_names)) {
+      newTrack.artist_names = [];
+  }
+
   const dbConnect = dbo.getDb();
-  let result = await dbConnect
-    .collection('music')
-    .insertOne(req.body);
-  res.status(201).send(result);
+  try {
+      const result = await dbConnect.collection('music').insertOne(newTrack);
+      res.redirect(req.get('referer'));
+  } catch (err) {
+      res.status(400).send('Error al añadir la canción');
+  }
 });
 
 router.put('/:id', async (req, res) => {

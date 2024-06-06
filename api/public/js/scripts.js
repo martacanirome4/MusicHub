@@ -34,3 +34,43 @@ const navbarToggle = document.getElementById('navbar-toggle');
 navbarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('show');
 });
+
+document.getElementById('updateForm').onsubmit = async function(event) {
+    event.preventDefault(); // Prevenir el envío del formulario
+
+    // Obtener los datos del formulario
+    const albumName = document.getElementById('album_name').value;
+    const albumUri = document.getElementById('album_uri').value;
+    const artistNames = document.getElementById('artist_names').value;
+    const albumReleaseDate = document.getElementById('album_release_date').value;
+    const albumImageUrl = document.getElementById('album_image_url').value;
+
+    const formData = {
+        album_name: albumName,
+        artist_names: artistNames.split(',').map(name => name.trim()),
+        album_release_date: albumReleaseDate,
+        album_image_url: albumImageUrl
+    };
+
+    // Enviar la solicitud PUT
+    try {
+        const response = await fetch(`/api/v1/albums/${albumUri}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('Error al actualizar el álbum');
+        }
+        
+        // Redirigir a la página de álbumes después de actualizar
+        window.location.href = '/api/v1/albums';
+    } catch (error) {
+        console.error('Error:', error);
+        // Manejar el error si la solicitud falla
+    }
+};
+

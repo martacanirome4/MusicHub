@@ -85,28 +85,28 @@
             </div>
             <div class="form-container">
                 <h2>(PUT) Actualizar Álbum</h2>
-                <form action="/api/v1/albums/:id" method="PUT">
+                <form id="updateForm" action="/api/v1/albums" method="POST">
                     <!-- Campos del formulario de actualizar álbum -->
-                    <label for="album_id">ID del Álbum a Actualizar:</label>
-                    <input type="text" id="album_id" name="album_id" required>
-
+                    <input type="hidden" name="_method" value="PUT">
+    
                     <label for="album_name">Nuevo Nombre del Álbum:</label>
                     <input type="text" id="album_name" name="album_name" required>
-
+                
                     <label for="album_uri">Nueva URI del Álbum:</label>
                     <input type="text" id="album_uri" name="album_uri" required>
-
+                
                     <label for="artist_names">Nuevos Nombres de los Artistas:</label>
                     <input type="text" id="artist_names" name="artist_names" required>
-
+                
                     <label for="album_release_date">Nueva Fecha de Lanzamiento:</label>
                     <input type="date" id="album_release_date" name="album_release_date" required>
-
+                
                     <label for="album_image_url">Nueva URL de la Imagen del Álbum:</label>
                     <input type="text" id="album_image_url" name="album_image_url" required>
-
+                
                     <button type="submit">Actualizar Álbum</button>
                 </form>
+                
             </div>
         </div>
     </div>

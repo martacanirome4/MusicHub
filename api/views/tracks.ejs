@@ -21,25 +21,25 @@
     <div class="container">
         <div class="main-content">
             <h1>Lista de Canciones</h1>
-            <% if (tracks.length > 0) { %>
-                <ul>
-                    <% tracks.forEach(track => { %>
-                        <li>
-                            <h2><%= track.track_name %></h2>
-                            <p><strong>URI:</strong> <%= track.track_uri %></p>
-                            <p><strong>Artista(s):</strong> <%= Array.isArray(track.artist_names) ? track.artist_names.join(', ') : track.artist_names %></p>
-                            <p><strong>Álbum:</strong> <%= track.album_name %></p>
-                        </li>
-                    <% }); %>
-                </ul>
-                <% if (next) { %>
-                    <div style="text-align: center;">
-                        <button onclick="window.location.href='/api/v1/tracks?next=<%= next %>'">Siguiente</button>
-                    </div>
+                <% if (tracks.length > 0) { %>
+                    <ul>
+                        <% tracks.forEach(track => { %>
+                            <li>
+                                <h2><%= track.track_name %></h2>
+                                <p><strong>URI:</strong> <%= track.track_uri %></p>
+                                <p><strong>Artista(s):</strong> <%= Array.isArray(track.artist_names) ? track.artist_names.join(', ') : track.artist_names %></p>
+                                <p><strong>Álbum:</strong> <%= track.album_name %></p>
+                            </li>
+                        <% }); %>
+                    </ul>
+                    <% if (next) { %>
+                        <div style="text-align: center;">
+                            <button onclick="window.location.href='/api/v1/tracks?next=<%= next %>'">Siguiente</button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p class="no-tracks"><%= message || 'No se encontraron canciones.' %></p>
                 <% } %>
-            <% } else { %>
-                <p class="no-tracks"><%= message || 'No se encontraron canciones.' %></p>
-            <% } %>
         </div>
         <div class="form-list">
             <div class="form-container">
@@ -53,32 +53,32 @@
             </div>            
             <div class="form-container">
                 <h2>(POST) Añadir Canción</h2>
-                <form action="/api/v1/albums" method="POST">
+                <form id="addTrackForm" method="POST">
+                    <label for="track_name">Nombre de la Canción:</label>
+                    <input type="text" id="track_name" name="track_name" required>
+            
+                    <label for="track_uri">URI de la Canción:</label>
+                    <input type="text" id="track_uri" name="track_uri" required>
+            
+                    <label for="artist_names">Nombres de los Artistas:</label>
+                    <input type="text" id="artist_names" name="artist_names" required>
+            
                     <label for="album_name">Nombre del Álbum:</label>
                     <input type="text" id="album_name" name="album_name" required>
 
                     <label for="album_uri">URI del Álbum:</label>
                     <input type="text" id="album_uri" name="album_uri" required>
-
-                    <label for="artist_names">Nombres de los Artistas:</label>
-                    <input type="text" id="artist_names" name="artist_names" required>
-
-                    <label for="album_release_date">Fecha de Lanzamiento:</label>
-                    <input type="date" id="album_release_date" name="album_release_date" required>
-
-                    <label for="album_image_url">URL de la Imagen del Álbum:</label>
-                    <input type="text" id="album_image_url" name="album_image_url" required>
-
+            
                     <button type="submit">Añadir Canción</button>
                 </form>
             </div>
             <div class="form-container">
                 <h2>(DELETE) Eliminar Canción</h2>
-                    <form id="deleteForm" action="/api/v1/albums" method="POST">
+                    <form id="deleteForm" action="/api/v1/tracks" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <!-- Campos del formulario de eliminar álbum -->
-                        <label for="album_id">ID de la canción a Eliminar:</label>
-                        <input type="text" id="album_id" name="album_id" required>
+                        <label for="track_id">ID de la canción a Eliminar:</label>
+                        <input type="text" id="track_id" name="track_id" required>
                         <button type="submit">Eliminar Canción</button>
                     </form>
             </div>

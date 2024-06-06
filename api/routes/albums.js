@@ -38,20 +38,36 @@ router.get('/', async (req, res) => {
   res.render('albums', { albums: results, next: next });
 });
 
-
 // Ruta para obtener detalles de un álbum específico
 router.get('/:album_uri', async (req, res) => {
-  const albumUri = decodeURIComponent(req.params.album_uri); // Decodificar el URI del álbum
+  const albumUri = decodeURIComponent(req.params.album_uri);
   const dbConnect = dbo.getDb();
-  const album = await dbConnect
-    .collection('music')
-    .findOne({album_uri: albumUri})
-    .catch(err => res.status(400).send('Error al buscar el álbum'));
-  if (!album) {
-    return res.status(404).json({message: 'Álbum no encontrado'});
+  const limit = 1; // Limita la cantidad de resultados por página
+  const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
+
+  try {
+      // Buscar el álbum por su URI
+      const albums = await dbConnect.collection('music')
+          .find({ album_uri: albumUri })
+          .skip(next) // Saltar los primeros 'next' resultados para la paginación
+          .limit(limit) // Limitar los resultados a 'limit'
+          .toArray();
+
+      // Si no se encuentran álbumes, devolver un mensaje de error
+      if (!albums.length) {
+          return res.status(404).render('albums', { albums: [], message: 'Álbum no encontrado' });
+      }
+
+      // Calcular el valor del próximo 'next' para la siguiente página
+      const nextPage = albums.length === limit ? next + limit : null;
+
+      // Renderizar la vista con los álbumes encontrados y el valor de 'nextPage'
+      res.status(200).render('albums', { albums, next: nextPage, message: '' });
+  } catch (err) {
+      res.status(500).send('Error al buscar el álbum');
   }
-  res.json(album).status(200);
 });
+
 
 // Ruta para actualizar un álbum existente
 router.put('/:album_uri', async (req, res) => {
@@ -106,9 +122,19 @@ router.get('/:album_uri/artist', async (req, res) => {
     };
     res.json(artistDetails).status(200);
   });
+
   // Ruta para añadir un nuevo álbum
   router.post('/', async (req, res) => {
-    const newAlbum = req.body; // Obtener los datos del formulario
+    let newAlbum = req.body; // Obtener los datos del formulario
+    console.log(newAlbum);
+
+    // Convertir artist_names a un array si es una cadena
+    if (typeof newAlbum.artist_names === 'string') {
+        newAlbum.artist_names = newAlbum.artist_names.split(',').map(name => name.trim());
+    } else if (!Array.isArray(newAlbum.artist_names)) {
+        newAlbum.artist_names = [];
+    }
+
     const dbConnect = dbo.getDb();
     try {
         const result = await dbConnect.collection('music').insertOne(newAlbum);
@@ -117,8 +143,6 @@ router.get('/:album_uri/artist', async (req, res) => {
         res.status(400).send('Error al añadir el álbum');
     }
 });
-
-  
 
   // Ruta para obtener todas las canciones asociadas a un álbum específico
 router.get('/:album_uri/tracks', async (req, res) => {

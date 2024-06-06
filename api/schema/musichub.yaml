@@ -614,10 +614,6 @@ components:
           type: string
         album_name:
           type: string
-        artist_uris:
-          type: array
-          items:
-            type: string
         artist_names:
           type: array
           items:

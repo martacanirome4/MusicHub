@@ -21,38 +21,39 @@
     <div class="container">
         <div class="main-content">
             <h1>Lista de Álbumes</h1>
-            <% if (albums.length > 0) { %>
-                <ul>
-                    <% albums.forEach(album => { %>
-                        <li>
-                            <h2><%= album.album_name %></h2>
-                            <p><strong>URI:</strong> <%= album.album_uri %></p>
-                            <p><strong>Artista:</strong> <%= Array.isArray(album.artist_names) ? album.artist_names.join(', ') : album.artist_names %></p>
-                            <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
-                            <img src="<%= album.album_image_url %>" alt="<%= album.album_name %>" style="max-width: 200px;">
-                        </li>
-                    <% }); %>
-                </ul>
-                <% if (next) { %>
-                    <div style="text-align: center;">
-                        <button onclick="window.location.href='/api/v1/albums?next=<%= next %>'">Siguiente</button>
-                    </div>
+                <% if (albums.length > 0) { %>
+                    <ul>
+                        <% albums.forEach(album => { %>
+                            <li>
+                                <h2><%= album.album_name %></h2>
+                                <p><strong>URI:</strong> <%= album.album_uri %></p>
+                                <p><strong>Artista:</strong> <%= Array.isArray(album.artist_names) ? album.artist_names.join(', ') : album.artist_names %></p>
+                                <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
+                                <img src="<%= album.album_image_url %>" alt="<%= album.album_name %>" style="max-width: 200px;">
+                            </li>
+                        <% }); %>
+                    </ul>
+                    <% if (next) { %>
+                        <div style="text-align: center;">
+                            <button onclick="window.location.href='/api/v1/albums?next=<%= next %>'">Siguiente</button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p class="no-albums"><%= message || 'No se encontraron álbumes.' %></p>
                 <% } %>
-            <% } else { %>
-                <p class="no-albums">No se encontraron álbumes.</p>
-            <% } %>
         </div>
         <div class="form-list">
             <div class="form-container">
-                <h2>Barra de Búsqueda</h2>
-                <form action="/api/v1/search" method="GET">
-                    <label for="search_query">Buscar:</label>
+                <h2>(GET) Barra de Búsqueda</h2>
+                <!-- El formulario no necesita action ya que se manejará mediante JavaScript -->
+                <form id="searchForm" method="GET">
+                    <label for="search_query">Buscar álbum por URI:</label>
                     <input type="text" id="search_query" name="search_query" required>
                     <button type="submit">Buscar</button>
                 </form>
             </div>
             <div class="form-container">
-                <h2>Añadir Álbum</h2>
+                <h2>(POST) Añadir Álbum</h2>
                 <form action="/api/v1/albums" method="POST">
                     <label for="album_name">Nombre del Álbum:</label>
                     <input type="text" id="album_name" name="album_name" required>
@@ -73,7 +74,7 @@
                 </form>
             </div>
             <div class="form-container">
-                <h2>Eliminar Álbum</h2>
+                <h2>(DELETE) Eliminar Álbum</h2>
                 <form action="/api/v1/albums/:id" method="DELETE">
                     <!-- Campos del formulario de eliminar álbum -->
                     <label for="album_id">ID del Álbum a Eliminar:</label>
@@ -82,7 +83,7 @@
                 </form>
             </div>
             <div class="form-container">
-                <h2>Actualizar Álbum</h2>
+                <h2>(PUT) Actualizar Álbum</h2>
                 <form action="/api/v1/albums/:id" method="PUT">
                     <!-- Campos del formulario de actualizar álbum -->
                     <label for="album_id">ID del Álbum a Actualizar:</label>
@@ -115,6 +116,15 @@
         navbarToggle.addEventListener('click', () => {
             sidebar.classList.toggle('show');
         });
+    </script>
+    <script>
+        // Añadir un evento para manejar la búsqueda al enviar el formulario
+        document.getElementById('searchForm').onsubmit = function(event) {
+          event.preventDefault(); // Prevenir el envío del formulario
+          const query = document.getElementById('search_query').value; // Obtener el valor de búsqueda
+          // Redirigir a la URL correcta con el URI del álbum
+          window.location.href = `/api/v1/albums/${encodeURIComponent(query)}`;
+        };
     </script>
 </body>
 </html>

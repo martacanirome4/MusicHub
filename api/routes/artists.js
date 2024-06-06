@@ -29,17 +29,17 @@ router.get('/', async (req, res) => {
       .sort({ _id: -1 })
       .limit(MAX_RESULTS) // Usar MAX_RESULTS para limitar la cantidad de resultados
       .toArray()
-      .catch(err => res.status(400).send('Error al buscar álbumes'));
+      .catch(err => res.status(400).send('Error al buscar artista'));
   
   // Calcular el valor de `next` para el siguiente conjunto de álbumes
   next = results.length > 0 ? results[results.length - 1]._id : null;
 
   // Renderizar la plantilla EJS con los resultados de la consulta
-  res.render('albums', { albums: results, next: next });
+  res.render('artists', { albums: results, next: next });
 });
 
 // Ruta para obtener detalles de un álbum específico
-router.get('/:album_uri', async (req, res) => {
+router.get('/:artist_uri', async (req, res) => {
   const albumUri = decodeURIComponent(req.params.album_uri);
   const dbConnect = dbo.getDb();
   const limit = 1; // Limita la cantidad de resultados por página
@@ -62,9 +62,9 @@ router.get('/:album_uri', async (req, res) => {
       const nextPage = albums.length === limit ? next + limit : null;
 
       // Renderizar la vista con los álbumes encontrados y el valor de 'nextPage'
-      res.status(200).render('albums', { albums, next: nextPage, message: '' });
+      res.status(200).render('artista', { albums, next: nextPage, message: '' });
   } catch (err) {
-      res.status(500).send('Error al buscar el álbum');
+      res.status(500).send('Error al buscar el artista');
   }
 });
 

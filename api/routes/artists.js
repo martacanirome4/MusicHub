@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
 
 // Ruta para obtener detalles de un álbum específico
 router.get('/:artist_uri', async (req, res) => {
-  const albumUri = decodeURIComponent(req.params.album_uri);
+  const artistUri = decodeURIComponent(req.params.artist_uri);
   const dbConnect = dbo.getDb();
   const limit = 1; // Limita la cantidad de resultados por página
   const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
@@ -48,7 +48,7 @@ router.get('/:artist_uri', async (req, res) => {
   try {
       // Buscar el álbum por su URI
       const albums = await dbConnect.collection('music')
-          .find({ album_uri: albumUri })
+          .find({ artist_uris: artistUri })
           .skip(next) // Saltar los primeros 'next' resultados para la paginación
           .limit(limit) // Limitar los resultados a 'limit'
           .toArray();
@@ -88,7 +88,7 @@ router.put('/:album_uri', async (req, res) => {
 });
 
 // Ruta para eliminar un álbum
-router.delete('/:album_uri', async (req, res) => {
+router.delete('/:artist_uri', async (req, res) => {
   const albumUri = decodeURIComponent(req.params.album_uri);
   const dbConnect = dbo.getDb();
   console.log("aqui3")

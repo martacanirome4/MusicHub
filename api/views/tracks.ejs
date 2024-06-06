@@ -83,30 +83,27 @@
                     </form>
             </div>
             <div class="form-container">
-                <h2>(PUT) Actualizar Canción</h2>
-                <form action="/api/v1/albums/:id" method="PUT">
-                    <!-- Campos del formulario de actualizar álbum -->
-                    <label for="album_id">ID del Álbum a Actualizar:</label>
-                    <input type="text" id="album_id" name="album_id" required>
+                <h2>(PUT)</h2>
+                    <form id="putForm" action="/api/v1/tracks" method="POST">
+                        <input type="hidden" name="_method" value="PUT">
+                        <!-- Campos del formulario de eliminar álbum -->
 
-                    <label for="album_name">Nuevo Nombre del Álbum:</label>
-                    <input type="text" id="album_name" name="album_name" required>
+                        <label for="track">URI actual de la Canción:</label>
+                        <input type="text" id="track_put" name="track_put" required>
 
-                    <label for="album_uri">Nueva URI del Álbum:</label>
-                    <input type="text" id="album_uri" name="album_uri" required>
+                        <label for="track_name">Nombre del Canción:</label>
+                        <input type="text" id="track_name_put" name="track_name_put" required>
 
-                    <label for="artist_names">Nuevos Nombres de los Artistas:</label>
-                    <input type="text" id="artist_names" name="artist_names" required>
+                        <label for="track_uri">Nueva URI del Canción:</label>
+                        <input type="text" id="track_uri_put" name="track_uri_put" required>
 
-                    <label for="album_release_date">Nueva Fecha de Lanzamiento:</label>
-                    <input type="date" id="album_release_date" name="album_release_date" required>
+                        <label for="track_artist_names">Nombres de los Artistas:</label>
+                        <input type="text" id="artist_names_put" name="artist_names_put" required>
 
-                    <label for="album_image_url">Nueva URL de la Imagen del Álbum:</label>
-                    <input type="text" id="album_image_url" name="album_image_url" required>
-
-                    <button type="submit">Actualizar Canción</button>
-                </form>
+                        <button type="submit">put</button>
+                    </form>
             </div>
+        </div>
         </div>
     </div>
     <script src="/js/scriptsTracks.js"></script>

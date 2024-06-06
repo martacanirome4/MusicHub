@@ -89,16 +89,21 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
-  const query = {track_uri: {$eq: (decodeURIComponent(req.params.id))}};
-  const update = {$set:{
-    track_name: req.body.track_name,
-  }};
+router.put('/:track_uri', async (req, res) => {
+  const trackUri = decodeURIComponent(req.params.track_uri); // Decodificar el URI del álbum
+  const updatedtrack = req.body;
   const dbConnect = dbo.getDb();
-  let result = await dbConnect
+
+  await dbConnect
     .collection('music')
-    .updateOne(query, update);
-  res.status(200).send(result);
+    .updateOne({track_uri: trackUri}, {$set: updatedtrack})
+    .then(result => {
+      if (result.modifiedCount === 0) {
+        return res.status(404).json({message: 'Álbum no encontrado'});
+      }
+      res.json(trackUri).status(200);
+    })
+    .catch(err => res.status(400).send('Error al actualizar el álbum'));
 });
 
 // Ruta para eliminar una canción

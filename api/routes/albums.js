@@ -88,19 +88,19 @@ router.put('/:album_uri', async (req, res) => {
 
 // Ruta para eliminar un álbum
 router.delete('/:album_uri', async (req, res) => {
-  const albumUri = decodeURIComponent(req.params.album_uri); // Decodificar el URI del álbum
+  const albumUri = decodeURIComponent(req.params.album_uri);
   const dbConnect = dbo.getDb();
-  await dbConnect
-    .collection('music')
-    .deleteOne({album_uri: albumUri})
-    .then(result => {
-      if (result.deletedCount === 0) {
-        return res.status(404).json({message: 'Álbum no encontrado'});
-      }
-      res.status(204).send();
-    })
-    .catch(err => res.status(400).send('Error al eliminar el álbum'));
+  try {
+    const result = await dbConnect.collection('music').deleteOne({ album_uri: albumUri });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Álbum no encontrado' });
+    }
+    res.redirect('/api/v1/albums');
+  } catch (err) {
+    res.status(400).send('Error al eliminar el álbum');
+  }
 });
+
 
 
 // Ruta para obtener detalles del artista asociado a un álbum específico

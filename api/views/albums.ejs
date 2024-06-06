@@ -75,12 +75,13 @@
             </div>
             <div class="form-container">
                 <h2>(DELETE) Eliminar Álbum</h2>
-                <form action="/api/v1/albums/:id" method="DELETE">
-                    <!-- Campos del formulario de eliminar álbum -->
-                    <label for="album_id">ID del Álbum a Eliminar:</label>
-                    <input type="text" id="album_id" name="album_id" required>
-                    <button type="submit">Eliminar Álbum</button>
-                </form>
+                    <form id="deleteForm" action="/api/v1/albums" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <!-- Campos del formulario de eliminar álbum -->
+                        <label for="album_id">ID del Álbum a Eliminar:</label>
+                        <input type="text" id="album_id" name="album_id" required>
+                        <button type="submit">Eliminar Álbum</button>
+                    </form>
             </div>
             <div class="form-container">
                 <h2>(PUT) Actualizar Álbum</h2>
@@ -124,6 +125,29 @@
           const query = document.getElementById('search_query').value; // Obtener el valor de búsqueda
           // Redirigir a la URL correcta con el URI del álbum
           window.location.href = `/api/v1/albums/${encodeURIComponent(query)}`;
+        };
+    </script>
+    <script>
+        document.getElementById('deleteForm').onsubmit = async function(event) {
+            event.preventDefault(); // Prevenir el envío del formulario
+
+            const albumId = document.getElementById('album_id').value; // Obtener el ID del álbum
+            // Enviar la solicitud DELETE
+            try {
+                const response = await fetch(`/api/v1/albums/${albumId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ album_id: albumId })
+                });
+                
+                // Redirigir a la página de álbumes después de eliminar
+                window.location.href = '/api/v1/albums';
+            } catch (error) {
+                console.error('Error:', error);
+                // Manejar el error si la solicitud falla
+            }
         };
     </script>
 </body>

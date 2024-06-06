@@ -4,46 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Álbumes</title>
-    <style></style>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <div class="header-container"> <!-- Contenedor adicional -->
+        <div class="header-container">
             <h2>MusicHub</h2>
         </div>
         <ul>
             <li><a href="#">Álbumes</a></li>
             <li><a href="#">Canciones</a></li>
             <li><a href="/api/v1/chat">Chat</a></li>
-            <!-- Agrega más opciones de navegación según sea necesario -->
         </ul>
     </div>
     <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
     <div class="container">
-        <h1>Lista de Álbumes</h1>
-        <% if (albums.length > 0) { %>
-            <ul>
-                <% albums.forEach(album => { %>
-                    <li>
-                        <h2><%= album.album_name %></h2>
-                        <p><strong>URI:</strong> <%= album.album_uri %></p>
-                        <p><strong>Artista:</strong> <%= album.artist_names.join(', ') %></p>
-                        <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
-                        <!-- Visualización de la imagen del álbum -->
-                        <img src="<%= album.album_image_url %>" alt="<%= album.album_name %>" style="max-width: 200px;">
-                        <!-- Aquí puedes incluir más propiedades según tus necesidades -->
-                    </li>
-                <% }); %>
-            </ul>
-            <% if (next) { %>
-                <div style="text-align: center;">
-                    <button onclick="window.location.href='/api/v1/albums?next=<%= next %>'">Siguiente</button>
-                </div>
+        <div class="main-content">
+            <h1>Lista de Álbumes</h1>
+            <% if (albums.length > 0) { %>
+                <ul>
+                    <% albums.forEach(album => { %>
+                        <li>
+                            <h2><%= album.album_name %></h2>
+                            <p><strong>URI:</strong> <%= album.album_uri %></p>
+                            <p><strong>Artista:</strong> <%= Array.isArray(album.artist_names) ? album.artist_names.join(', ') : album.artist_names %></p>
+                            <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
+                            <img src="<%= album.album_image_url %>" alt="<%= album.album_name %>" style="max-width: 200px;">
+                        </li>
+                    <% }); %>
+                </ul>
+                <% if (next) { %>
+                    <div style="text-align: center;">
+                        <button onclick="window.location.href='/api/v1/albums?next=<%= next %>'">Siguiente</button>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <p class="no-albums">No se encontraron álbumes.</p>
             <% } %>
-        <% } else { %>
-            <p class="no-albums">No se encontraron álbumes.</p>
-        <% } %>
+        </div>
+        <div class="form-list">
+            <div class="form-container">
+                <h2>Barra de Búsqueda</h2>
+                <form action="/api/v1/search" method="GET">
+                    <label for="search_query">Buscar:</label>
+                    <input type="text" id="search_query" name="search_query" required>
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>Añadir Álbum</h2>
+                <form action="/api/v1/albums" method="POST">
+                    <label for="album_name">Nombre del Álbum:</label>
+                    <input type="text" id="album_name" name="album_name" required>
+
+                    <label for="album_uri">URI del Álbum:</label>
+                    <input type="text" id="album_uri" name="album_uri" required>
+
+                    <label for="artist_names">Nombres de los Artistas:</label>
+                    <input type="text" id="artist_names" name="artist_names" required>
+
+                    <label for="album_release_date">Fecha de Lanzamiento:</label>
+                    <input type="date" id="album_release_date" name="album_release_date" required>
+
+                    <label for="album_image_url">URL de la Imagen del Álbum:</label>
+                    <input type="text" id="album_image_url" name="album_image_url" required>
+
+                    <button type="submit">Añadir Álbum</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>Eliminar Álbum</h2>
+                <form action="/api/v1/albums/:id" method="DELETE">
+                    <!-- Campos del formulario de eliminar álbum -->
+                    <label for="album_id">ID del Álbum a Eliminar:</label>
+                    <input type="text" id="album_id" name="album_id" required>
+                    <button type="submit">Eliminar Álbum</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>Actualizar Álbum</h2>
+                <form action="/api/v1/albums/:id" method="PUT">
+                    <!-- Campos del formulario de actualizar álbum -->
+                    <label for="album_id">ID del Álbum a Actualizar:</label>
+                    <input type="text" id="album_id" name="album_id" required>
+
+                    <label for="album_name">Nuevo Nombre del Álbum:</label>
+                    <input type="text" id="album_name" name="album_name" required>
+
+                    <label for="album_uri">Nueva URI del Álbum:</label>
+                    <input type="text" id="album_uri" name="album_uri" required>
+
+                    <label for="artist_names">Nuevos Nombres de los Artistas:</label>
+                    <input type="text" id="artist_names" name="artist_names" required>
+
+                    <label for="album_release_date">Nueva Fecha de Lanzamiento:</label>
+                    <input type="date" id="album_release_date" name="album_release_date" required>
+
+                    <label for="album_image_url">Nueva URL de la Imagen del Álbum:</label>
+                    <input type="text" id="album_image_url" name="album_image_url" required>
+
+                    <button type="submit">Actualizar Álbum</button>
+                </form>
+            </div>
+        </div>
     </div>
     <script>
         const sidebar = document.getElementById('sidebar');

@@ -5,6 +5,7 @@ body {
     background-color: #121212;
     color: #fff;
 }
+
 .sidebar {
     width: 200px;
     height: 100vh;
@@ -15,9 +16,11 @@ body {
     transition: left 0.3s;
     z-index: 1000;
 }
+
 .sidebar.show {
     left: 0;
 }
+
 .navbar-toggle {
     background-color: transparent;
     color: #fff;
@@ -30,42 +33,67 @@ body {
     z-index: 2000;
     font-size: 20px;
 }
+
 .navbar-toggle:hover {
-    color: #9b3ff7;
+    color: #14a840;
 }
+
 .container {
-    margin-left: 200px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-container {
+    background-color: #333;
+    padding: 50px; /* Ajustar según sea necesario */
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-right: 30px;
+    margin-top: auto;
+    margin-bottom: 10px;
+    flex: 1; /* Para que el formulario ocupe el espacio disponible */
+}
+
+.main-content {
+    flex: 2;
     padding: 20px;
 }
+
 h1 {
-    color: #9f59e4;
+    color: #14a840;
     text-align: center;
     margin-bottom: 20px;
 }
+
 ul {
     list-style-type: none;
     padding: 0;
     margin-top: 20px;
 }
+
 li {
     background-color: #444;
     border-radius: 4px;
     margin-bottom: 10px;
     padding: 15px;
 }
+
 li:hover {
     background-color: #555;
 }
+
 h2 {
     margin-top: 0;
     margin-bottom: 10px;
-    color: #007bff;
+    color: #14a840;
 }
+
 p {
     margin: 0;
 }
+
 button {
-    background-color: #007bff;
+    background-color: #14a840;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -73,23 +101,62 @@ button {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 button:hover {
-    background-color: #0056b3;
+    background-color: #14a840;
 }
+
 .no-albums {
     text-align: center;
     color: #777;
 }
+
 a {
     color: #fff;
     text-decoration: none;
 }
-/* Contenedor adicional para el encabezado */
+
 .header-container {
     text-align: center;
-    margin-bottom: 30px; /* Margen inferior añadido */
+    margin-bottom: 30px;
 }
+
 .header-container h2 {
-    font-size: 24px; /* Tamaño de fuente personalizado */
-    margin-top: 55px; /* Margen superior añadido */
+    font-size: 24px;
+    margin-top: 55px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ccc;
+}
+
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #222;
+    color: #fff;
+}
+
+input[type="text"]::placeholder,
+input[type="date"]::placeholder {
+    color: #777;
+}
+
+form button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.form-list {
+    display: flex;
+    flex-direction: column; /* Para que los formularios estén uno encima del otro */
+    margin-right: 30px;
+    margin-top: 98px;
+    margin-bottom: auto;
 }

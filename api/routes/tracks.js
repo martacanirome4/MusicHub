@@ -49,7 +49,6 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const dbConnect = dbo.getDb();
-  console.log(req.body);
   let result = await dbConnect
     .collection('music')
     .insertOne(req.body);

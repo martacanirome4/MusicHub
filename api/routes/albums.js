@@ -106,7 +106,20 @@ router.get('/:album_uri/artist', async (req, res) => {
     };
     res.json(artistDetails).status(200);
   });
+  // Ruta para añadir un nuevo álbum
+  router.post('/', async (req, res) => {
+    const newAlbum = req.body; // Obtener los datos del formulario
+    const dbConnect = dbo.getDb();
+    try {
+        const result = await dbConnect.collection('music').insertOne(newAlbum);
+        res.redirect(req.get('referer'));
+    } catch (err) {
+        res.status(400).send('Error al añadir el álbum');
+    }
+});
+
   
+
   // Ruta para obtener todas las canciones asociadas a un álbum específico
 router.get('/:album_uri/tracks', async (req, res) => {
     const albumUri = decodeURIComponent(req.params.album_uri); // Decodificar el URI del álbum
@@ -127,7 +140,7 @@ router.get('/:album_uri/tracks', async (req, res) => {
     }));
     res.json(tracksDetails).status(200);
   });
-  
+
 
 
 module.exports = router;

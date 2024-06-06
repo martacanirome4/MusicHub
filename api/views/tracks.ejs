@@ -1,10 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Canciones</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h1>Welcome to My Music API</h1>
-    <p>This is the home page.</p>
+    <div class="sidebar" id="sidebar">
+        <div class="header-container">
+            <h2>MusicHub</h2>
+        </div>
+        <ul>
+            <li><a href="http://localhost:3000/api/v1/albums">Álbumes</a></li>
+            <li><a href="http://localhost:3000/api/v1/tracks">Canciones</a></li>
+            <li><a href="http://localhost:3000/api/v1/chat">Chat</a></li>
+        </ul>
+    </div>
+    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+    <div class="container">
+        <div class="main-content">
+            <h1>Lista de Canciones</h1>
+            <% if (tracks.length > 0) { %>
+                <ul>
+                    <% tracks.forEach(track => { %>
+                        <li>
+                            <h2><%= track.track_name %></h2>
+                            <p><strong>URI:</strong> <%= track.track_uri %></p>
+                            <p><strong>Artista(s):</strong> <%= Array.isArray(track.artist_names) ? track.artist_names.join(', ') : track.artist_names %></p>
+                            <p><strong>Álbum:</strong> <%= track.album_name %></p>
+                        </li>
+                    <% }); %>
+                </ul>
+                <% if (next) { %>
+                    <div style="text-align: center;">
+                        <button onclick="window.location.href='/api/v1/tracks?next=<%= next %>'">Siguiente</button>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <p class="no-tracks"><%= message || 'No se encontraron canciones.' %></p>
+            <% } %>
+        </div>
+        <div class="form-list">
+            <div class="form-container">
+                <h2>(GET) Barra de Búsqueda</h2>
+                <!-- El formulario no necesita action ya que se manejará mediante JavaScript -->
+                <form id="searchForm" method="GET">
+                    <label for="search_query">Buscar álbum por URI:</label>
+                    <input type="text" id="search_query" name="search_query" required>
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>(POST) Añadir Canción</h2>
+                <form action="/api/v1/albums" method="POST">
+                    <label for="album_name">Nombre del Álbum:</label>
+                    <input type="text" id="album_name" name="album_name" required>
+
+                    <label for="album_uri">URI del Álbum:</label>
+                    <input type="text" id="album_uri" name="album_uri" required>
+
+                    <label for="artist_names">Nombres de los Artistas:</label>
+                    <input type="text" id="artist_names" name="artist_names" required>
+
+                    <label for="album_release_date">Fecha de Lanzamiento:</label>
+                    <input type="date" id="album_release_date" name="album_release_date" required>
+
+                    <label for="album_image_url">URL de la Imagen del Álbum:</label>
+                    <input type="text" id="album_image_url" name="album_image_url" required>
+
+                    <button type="submit">Añadir Canción</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>(DELETE) Eliminar Canción</h2>
+                    <form id="deleteForm" action="/api/v1/albums" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <!-- Campos del formulario de eliminar álbum -->
+                        <label for="album_id">ID de la canción a Eliminar:</label>
+                        <input type="text" id="album_id" name="album_id" required>
+                        <button type="submit">Eliminar Canción</button>
+                    </form>
+            </div>
+            <div class="form-container">
+                <h2>(PUT) Actualizar Canción</h2>
+                <form action="/api/v1/albums/:id" method="PUT">
+                    <!-- Campos del formulario de actualizar álbum -->
+                    <label for="album_id">ID del Álbum a Actualizar:</label>
+                    <input type="text" id="album_id" name="album_id" required>
+
+                    <label for="album_name">Nuevo Nombre del Álbum:</label>
+                    <input type="text" id="album_name" name="album_name" required>
+
+                    <label for="album_uri">Nueva URI del Álbum:</label>
+                    <input type="text" id="album_uri" name="album_uri" required>
+
+                    <label for="artist_names">Nuevos Nombres de los Artistas:</label>
+                    <input type="text" id="artist_names" name="artist_names" required>
+
+                    <label for="album_release_date">Nueva Fecha de Lanzamiento:</label>
+                    <input type="date" id="album_release_date" name="album_release_date" required>
+
+                    <label for="album_image_url">Nueva URL de la Imagen del Álbum:</label>
+                    <input type="text" id="album_image_url" name="album_image_url" required>
+
+                    <button type="submit">Actualizar Canción</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/scriptsTracks.js"></script>
 </body>
 </html>

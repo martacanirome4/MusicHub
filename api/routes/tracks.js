@@ -5,45 +5,64 @@ const dbo = require('../db/conn');
 const ObjectId = require('mongodb').ObjectId;
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS);
 
+// Ruta para obtener todas las canciones
 
 router.get('/', async (req, res) => {
-  let limit = MAX_RESULTS;
-  if (req.query.limit){
-    limit =  Math.min(parseInt(req.query.limit), MAX_RESULTS);
+  try {
+    let limit = MAX_RESULTS;
+    if (req.query.limit) {
+      limit = Math.min(parseInt(req.query.limit), MAX_RESULTS);
+    }
+    let next = req.query.next;
+    let query = {};
+    if (next) {
+      query = { _id: { $lt: new ObjectId(next) } };
+    }
+    const options = {
+      projection: { _id: 0 }
+    };
+    const dbConnect = dbo.getDb();
+    let tracks = await dbConnect
+      .collection('music')
+      .find(query, options)
+      .sort({ _id: -1 })
+      .limit(limit)
+      .toArray();
+    next = tracks.length == limit ? tracks[tracks.length - 1]._id : null;
+    res.render('tracks', { tracks, next }); // Renderizar la plantilla EJS con los resultados de las canciones
+  } catch (error) {
+    console.error('Error al buscar las canciones:', error);
+    res.status(500).send('Error al buscar las canciones');
   }
-  let next = req.query.next;
-  let query = {}
-  if (next){
-    query = {_id: {$lt: new ObjectId}}
-  }
-  const options = {
-    projection: {_id: 0}
-  }
-  const dbConnect = dbo.getDb();
-  let results = await dbConnect
-    .collection('music')
-    .find(query, options)
-    .sort({_id: -1})
-    .limit(limit)
-    .toArray()
-    .catch(err => res.status(400).send('Error al buscar las canciones'));
-  next = results.length == limit ? results[results.length - 1]._id : null;
-  res.json({results, next}).status(200);
 });
 
-router.get('/:id', async (req, res) => {
+//BUSCAR POR URI
+router.get('/:track_uri', async (req, res) => {
+  const trackUri = decodeURIComponent(req.params.track_uri); // Corregido para usar 'track_uri' en lugar de 'album_uri'
   const dbConnect = dbo.getDb();
-  let query = {track_uri: {$eq: decodeURIComponent(req.params.id)}};
-  let projection = {_id: 0} 
-  let result = await dbConnect
-    .collection('music')
-    .find(query)
-    .project(projection)
-    .toArray();
-  if (!result){
-    res.send("Not found").status(404);
-  } else {
-    res.status(200).send(result);
+  const limit = 1; // Limita la cantidad de resultados por página
+  const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
+
+  try {
+      // Buscar la canción por su URI
+      const tracks = await dbConnect.collection('music')
+          .find({ track_uri: trackUri })
+          .skip(next) // Saltar los primeros 'next' resultados para la paginación
+          .limit(limit) // Limitar los resultados a 'limit'
+          .toArray();
+
+      // Si no se encuentran canciones, devolver un mensaje de error
+      if (!tracks.length) {
+          return res.status(404).render('tracks', { tracks: [], message: 'Canción no encontrada' }); // Corregido el mensaje
+      }
+
+      // Calcular el valor del próximo 'next' para la siguiente página
+      const nextPage = tracks.length === limit ? next + limit : null;
+
+      // Renderizar la vista con las canciones encontradas y el valor de 'nextPage'
+      res.status(200).render('tracks', { tracks, next: nextPage, message: '' });
+  } catch (err) {
+      res.status(500).send('Error al buscar la canción'); // Corregido el mensaje
   }
 });
 

@@ -1,6 +1,5 @@
 # MusicHub
 
-![License](https://img.shields.io/github/license/martacanirome4/API_REST_SWII)
 ![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)
 
 ## Descripción
@@ -24,8 +23,8 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 
 1. Clona este repositorio:
     ```bash
-    git clone https://github.com/martacanirome4/API_REST_SWII
-    cd API_REST_SWII/api
+    git clone https://github.com/martacanirome4/MusicHub
+    cd MusicHub/api
     ```
 
 2. Instala las dependencias:

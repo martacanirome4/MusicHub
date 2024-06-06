@@ -582,17 +582,10 @@ components:
           type: string
         track_name:
           type: string
-        artist_uris:
-          type: array
-          items:
-            type: string
-            example: /artists/{artist_uri}
         artist_names:
           type: array
           items:
             type: string
-        album_uri:
-          type: string
         album_name:
           type: string
     Artista:

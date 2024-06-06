@@ -5,5 +5,11 @@ document.getElementById('searchForm').onsubmit = function(event) {
     window.location.href = `/api/v1/tracks/${encodeURIComponent(query)}`;
 };
 
+const sidebar = document.getElementById('sidebar');
+const navbarToggle = document.getElementById('navbar-toggle');
+        
+navbarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('show');
+});
 
 

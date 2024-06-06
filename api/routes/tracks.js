@@ -87,13 +87,22 @@ router.put('/:id', async (req, res) => {
   res.status(200).send(result);
 });
 
-router.delete('/:id', async (req, res) => {
-  const query = {track_uri: {$eq: decodeURIComponent(req.params.id)}};
+// Ruta para eliminar una canción
+router.delete('/:track_uri', async (req, res) => {
+  const trackUri = decodeURIComponent(req.params.track_uri);
   const dbConnect = dbo.getDb();
-  let result = await dbConnect
-    .collection('music')
-    .deleteOne(query);
-  res.status(200).send(result);
+  console.log("aqui3")
+
+  try {
+    const result = await dbConnect.collection('music').deleteOne({ track_uri: trackUri });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Canción no encontrada' });
+    }
+    res.redirect('/api/v1/tracks');
+  } catch (err) {
+    res.status(400).send('Error al eliminar la canción');
+  }
 });
+
 
 module.exports = router;

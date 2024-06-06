@@ -9,68 +9,60 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const tracksRouter = require('./routes/tracks');
 const openAI = require("openai");
-const dotenv = require('dotenv');
 const albumsRouter = require('./routes/albums');
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
 const spotifyTracks = require('./routes/spotifyTracks');
-const axios = require('axios');
 const weatherRouter = require('./routes/weather');
-const base_uri = process.env.BASE_URI
+const spotifyRouter = require('./routes/spotify');
+const base_uri = process.env.BASE_URI;
 
 const app = express();
 
-// Configuración de conexión a la base de datos
+// Database connection
 conn.connectToDatabase();
 
-// Configuración del motor de vistas
+// View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Middleware de logging
+// Middleware setup
 app.use(logger('dev'));
-
-// Middleware para parsear solicitudes JSON
 app.use(express.json());
-
-// Middleware para parsear solicitudes con URL codificada
 app.use(express.urlencoded({ extended: false }));
-
-// Middleware para parsear cookies
 app.use(cookieParser());
-
-// Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rutas
+// Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
 app.use(base_uri + '/spotify-tracks', spotifyTracks);
 app.use(base_uri + '/weather', weatherRouter);
+app.use(base_uri + '/spotify', spotifyRouter);
 
-// Configuración de la API de Spotify
+// Spotify API configuration
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-    accessToken: process.env.SPOTIFY_ACCESS_TOKEN
 });
 
-// Autenticación de la API de Spotify
+// Spotify API authentication
 spotifyApi.clientCredentialsGrant()
     .then(data => {
-        console.log('Autenticado con éxito');
+        console.log('Authenticated successfully');
         spotifyApi.setAccessToken(data.body['access_token']);
     })
     .catch(error => {
-        console.log('Error de autenticación:', error);
+        console.error('Authentication error:', error);
     });
 
-// Función para manejar el chat
+// Chat function
 app.get('/api/v1/chat', (req, res) => {
-    res.render('chat'); // Esto renderizará la vista chat.ejs
+    res.render('chat');
 });
+
 async function chat(userMessage) {
     const client = new openAI.OpenAI({
         apiKey: process.env.OPENAI_API_KEY
@@ -92,10 +84,9 @@ async function chat(userMessage) {
     }
 }
 
-// Ruta para manejar los mensajes del cliente
 app.post('/send-message', async (req, res) => {
     const userMessage = req.body.message;
-    // Lógica para procesar el mensaje del usuario y obtener la respuesta del chat
+
     try {
         const response = await chat(userMessage);
         res.json({ message: response });
@@ -105,22 +96,17 @@ app.post('/send-message', async (req, res) => {
     }
 });
 
-// Ruta para mostrar la interfaz de chat
 app.get('/chat', (req, res) => {
-    res.render('chat'); // Renderiza el archivo chat.ejs
+    res.render('chat');
 });
 
-// Manejador de errores
+// Error handler
 app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
     res.status(err.status || 500);
     res.render('error');
 });
-
 
 console.log('App running on url: http://localhost:3000/api/v1/');
 

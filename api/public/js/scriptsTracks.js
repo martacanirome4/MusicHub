@@ -12,13 +12,6 @@ navbarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('show');
 });
 
-const sidebar = document.getElementById('sidebar');
-const navbarToggle = document.getElementById('navbar-toggle');
-        
-navbarToggle.addEventListener('click', () => {
-    sidebar.classList.toggle('show');
-});
-
 
 document.getElementById('deleteForm').onsubmit = async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario

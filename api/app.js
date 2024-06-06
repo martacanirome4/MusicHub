@@ -13,7 +13,8 @@ const albumsRouter = require('./routes/albums');
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
 const spotifyTracks = require('./routes/spotifyTracks');
-const weatherRouter = require('./routes/weather');
+const weatherRoutes = require('./routes/weather');
+const apiErrorHandler = require('./middleware/apiErrorHandler');
 const spotifyRouter = require('./routes/spotify');
 const base_uri = process.env.BASE_URI;
 
@@ -39,8 +40,11 @@ app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
 app.use(base_uri + '/spotify-tracks', spotifyTracks);
-app.use(base_uri + '/weather', weatherRouter);
+app.use(base_uri + '/weather', weatherRoutes);
 app.use(base_uri + '/spotify', spotifyRouter);
+// Middleware para asegurar que se manejen los errores de la API externa sin que la aplicación se caiga
+app.use(apiErrorHandler);
+
 
 // Spotify API configuration
 const spotifyApi = new SpotifyWebApi({

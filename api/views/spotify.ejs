@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Track Search</title>
+    <title>Buscador de canciones de Spotify</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
         body, html {
@@ -40,82 +40,6 @@
         .navbar-toggle:hover {
             color: #9b3ff7;
         }
-        .container {
-            margin-left: 200px;
-            padding: 20px;
-            height: 100%;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            
-        }
-        #chat-container {
-            background-color: #232323;
-            padding: 20px;
-            border-radius: 8px;
-            width: 1000px; /* Ancho del chat */
-            height: 500px;
-            border: 2px solid #6a6a6a; /* Color del borde del chat */
-            
-        }
-        #chat-messages {
-            height: calc(100% - 60px);
-            overflow-y: auto;
-            margin-bottom: 10px;
-            flex-direction: column;
-            display: flex;
-        }
-        
-        #input-container {
-            display: flex;
-            align-items: center;
-            margin-top: 10px; /* Ajusta el margen superior según sea necesario */
-        }
-        #user-input {
-            width: calc(100% - 100px); /* Ancho del campo de entrada */
-            padding: 8px;
-            margin-right: 5px;
-            border-radius: 4px;
-            border: 1px solid #666;
-            background-color: #555555;
-            color: #fff;
-        }
-
-        #chat-messages > .user-message {
-            /*border: 1px solid #060606;*/ /* Borde del mensaje del usuario */
-            color: #ffffff; /* Color del texto del mensaje del usuario */
-            margin-bottom: 10px;
-            border-radius: 10px;
-            padding: 8px;
-            display: inline-block;
-            background-color: #0e5924;
-            align-self: flex-end;
-        }
-
-        #chat-messages > .bot-message {
-            /*border: 1px solid #030303;*/ /* Borde del mensaje del bot */
-            color: #fefefe; /* Color del texto del mensaje del bot */
-            margin-bottom: 10px;
-            border-radius: 10px;
-            padding: 8px;
-            background-color: #3e3d3d;
-            align-self: flex-start;
-        }
-
-        
-        #send-btn {
-            background-color: #0e5924;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #send-btn:hover {
-            background-color: #101010;
-        }
     </style>
 </head>
 <body>
@@ -127,18 +51,18 @@
             <li><a href="/api/v1/albums">Álbumes</a></li>
             <li><a href="/api/v1/tracks">Canciones</a></li>
             <li><a href="/api/v1/chat">Chat</a></li>
-            <li><a href="/api/v1/weather">Weather</a></li>
-            <li><a href="/api/v1/spotify">Spotify Search</a></li>
+            <li><a href="/api/v1/spotify">Buscador de Spotify</a></li>
+            <li><a href="/api/v1/weather">El Tiempo</a></li>
         </ul>
     </div>
     <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
     <div class="container">
         <div class="main-content">
-            <h1>Spotify Track Search</h1>
+            <h1>Buscador de Canciones de Spotify</h1>
             <form id="spotifySearchForm">
-                <label for="query">Enter track name:</label>
+                <label for="query">Introduce el nombre de la canción:</label>
                 <input type="text" id="query" name="query" required>
-                <button type="submit">Search</button>
+                <button type="submit">Buscar</button>
             </form>
             <div id="spotifyResult" style="margin-top: 20px;">
                 <!-- Track data will be displayed here -->

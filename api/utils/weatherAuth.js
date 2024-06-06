@@ -1,4 +1,4 @@
-// File: api/utils/weatherAuth.js
+// utils/weatherAuth.js
 const axios = require('axios');
 const xml2js = require('xml2js');
 require('dotenv').config();
@@ -9,6 +9,12 @@ const getWeatherData = async (city) => {
 
   try {
     const response = await axios.get(weatherUrl);
+    
+    // Verificar si la respuesta es HTML (lo que indica un error)
+    if (response.headers['content-type'].includes('text/html')) {
+      throw new Error('Unexpected HTML response from OpenWeather API');
+    }
+
     const parser = new xml2js.Parser();
 
     return new Promise((resolve, reject) => {
@@ -27,4 +33,3 @@ const getWeatherData = async (city) => {
 };
 
 module.exports = getWeatherData;
-

@@ -106,7 +106,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Track'
+              $ref: '#/components/schemas/TrackUpdate'
       responses:
         200:
           description: Track actualizado con éxito.
@@ -588,6 +588,19 @@ components:
             type: string
         album_name:
           type: string
+        album_uri:
+          type: string
+    TrackUpdate:
+      type: object
+      properties:
+        track_uri:
+          type: string
+        track_name:
+          type: string
+        artist_names:
+          type: array
+          items:
+            type: string
     Artista:
       type: object
       properties:

@@ -68,10 +68,11 @@ router.get('/:artist_uri', async (req, res) => {
 
 
 router.put('/:artist_uri', async (req, res) => {
+  console.log(req.params)
   const artistUri = decodeURIComponent(req.params.artist_uri); 
   const updatedartist = req.body;
   const dbConnect = dbo.getDb();
-
+  console.log(artistUri)
   await dbConnect
     .collection('music')
     .updateOne({artist_uris: artistUri}, {$set: updatedartist})

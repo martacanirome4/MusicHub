@@ -24,24 +24,25 @@
     <div class="container">
         <div class="main-content">
             <h1>Lista de Álbumes</h1>
-                <% if (artists.length > 0) { %>
+                <% if (albums.length > 0) { %>
                     <ul>
-                        <% artists.forEach(artist => { %>
+                        <% albums.forEach(album => { %>
                             <li>
-                                <h2><%= artist.artist_name %></h2>
-                                <p><strong>URI:</strong> <%= artist.artist_uris %></p>
-                                <p><strong>Artista:</strong> <%= artist.artist_names %></p>
-                                <img src="<%= artist.artist_image_url %>" alt="<%= artist.artist_name %>" style="max-width: 200px;">
+                                <h2><%= album.album_name %></h2>
+                                <p><strong>URI:</strong> <%= album.album_uri %></p>
+                                <p><strong>Artista:</strong> <%= Array.isArray(album.artist_names) ? album.artist_names.join(', ') : album.artist_names %></p>
+                                <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
+                                <img src="<%= album.album_image_url %>" alt="<%= album.album_name %>" style="max-width: 200px;">
                             </li>
                         <% }); %>
                     </ul>
                     <% if (next) { %>
                         <div style="text-align: center;">
-                            <button onclick="window.location.href='/api/v1/artists?next=<%= next %>'">Siguiente</button>
+                            <button onclick="window.location.href='/api/v1/albums?next=<%= next %>'">Siguiente</button>
                         </div>
                     <% } %>
                 <% } else { %>
-                    <p class="no-artists"><%= message || 'No se encontraron artistas.' %></p>
+                    <p class="no-albums"><%= message || 'No se encontraron álbumes.' %></p>
                 <% } %>
         </div>
         <div class="form-list">

@@ -13,46 +13,39 @@ router.get('/', async (req, res) => {
       query = { _id: { $lt: new ObjectId(next) } };
   }
 
-  const options = {
-      projection: { _id: 0 }
-  };
-
   const dbConnect = dbo.getDb();
 
   let results = await dbConnect
       .collection('music')
-      .find(query, options)
+      .find(query)
       .sort({ _id: -1 })
       .limit(MAX_RESULTS)
       .toArray()
-      .catch(err => res.status(400).send('Error al buscar artistas'));
-
-  // Ajustar los resultados para incluir solo el primer artist_uris y artist_names
-  results = results.map(result => {
-      if (Array.isArray(result.artist_uris) && result.artist_uris.length > 0) {
-          result.artist_uris = result.artist_uris[0];
-      }
-      if (Array.isArray(result.artist_names) && result.artist_names.length > 0) {
-          result.artist_names = result.artist_names[0];
-      }
-      return result;
-  });
+      .catch(err => res.status(400).send('Error al buscar artista'));
 
   next = results.length > 0 ? results[results.length - 1]._id : null;
+
+  // Procesar los resultados para tomar solo el primer elemento de artist_uris y artist_names
+  results = results.map(artist => {
+      artist.artist_uris = Array.isArray(artist.artist_uris) ? artist.artist_uris[0] || '' : '';
+      artist.artist_names = Array.isArray(artist.artist_names) ? artist.artist_names[0] || '' : '';
+      return artist;
+  });
 
   res.render('artists', { artists: results, next: next });
 });
 
 router.get('/:artist_uri', async (req, res) => {
-  const artistUri = decodeURIComponent(req.params.track_uri);
+  const artistUri = decodeURIComponent(req.params.artist_uri);
   const dbConnect = dbo.getDb();
   const limit = 1; // Limita la cantidad de resultados por página
   const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
 
   try {
       // Buscar el álbum por su URI
+      console.log(artistUri)
       const artists = await dbConnect.collection('music')
-          .find({ artist_uri: artistUri })
+          .find({ artist_uris: artistUri })
           .skip(next) // Saltar los primeros 'next' resultados para la paginación
           .limit(limit) // Limitar los resultados a 'limit'
           .toArray();
@@ -68,7 +61,7 @@ router.get('/:artist_uri', async (req, res) => {
       // Renderizar la vista con los álbumes encontrados y el valor de 'nextPage'
       res.status(200).render('artists', { artists, next: nextPage, message: '' });
   } catch (err) {
-      res.status(500).send('Error al buscar el artista');
+      res.status(500).send('Error al buscar ');
   }
 });
 

@@ -1,0 +1,13 @@
+{
+    "track_uri": "string",
+    "track_name": "string",
+    "artist_uris": ["string"],
+    "artist_names": ["string"],
+    "album_uri": "string",
+    "album_name": "string",
+    "album_artist_uris": ["string"],
+    "album_artist_names": ["string"],
+    "album_release_date": "string",
+    "album_image_url": "string"
+  }
+  

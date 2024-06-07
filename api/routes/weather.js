@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const weatherController = require('../controllers/weatherController');
 
-// Route to get weather data
+// Ruta para obtener datos del clima
 router.get('/', weatherController.getWeather);
 
 module.exports = router;

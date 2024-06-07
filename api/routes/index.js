@@ -6,6 +6,7 @@ const ObjectId = require('mongodb').ObjectId;
 const router = express.Router();
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS);
 
+/*
 router.get('/', async (req, res) => {
   let limit = MAX_RESULTS;
   if (req.query.limit){
@@ -26,11 +27,11 @@ router.get('/', async (req, res) => {
     .catch(err => res.status(400).send('Error al buscar music'));
   next = results.length == limit ? results[results.length - 1]._id : null;
   res.json({results, next}).status(200);
-});
+  res.render('index');
+}); */
 
-// Route to render weather page
-router.get('/api/v1/weather', (req, res) => {
-  res.render('weather');
+router.get('/', async (req, res) => {
+  res.render('index');
 });
 
 

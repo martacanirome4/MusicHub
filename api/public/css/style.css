@@ -8,11 +8,11 @@ body {
 
 .sidebar {
     width: 200px;
-    height: 100vh;
+    height: 100%;
     background-color: #333;
     position: fixed;
     top: 0;
-    left: -200px;
+    left: -200px; /* Initially hidden */
     transition: left 0.3s;
     z-index: 1000;
 }
@@ -39,8 +39,13 @@ body {
 }
 
 .container {
+    margin-left: 200px; /* To prevent content overlap with the sidebar */
     display: flex;
     flex-wrap: wrap;
+}
+
+.container.shifted {
+    margin-left: 0; /* Adjust when sidebar is visible */
 }
 
 .form-container {

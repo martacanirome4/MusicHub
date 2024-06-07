@@ -1,4 +1,3 @@
-// file: api/app.js
 require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
@@ -13,10 +12,13 @@ const albumsRouter = require('./routes/albums');
 const conn = require('./db/conn');
 const SpotifyWebApi = require('spotify-web-api-node');
 const spotifyTracks = require('./routes/spotifyTracks');
-const weatherRouter = require('./routes/weather');
+const weatherRoutes = require('./routes/weather');
+const apiErrorHandler = require('./middleware/apiErrorHandler');
 const spotifyRouter = require('./routes/spotify');
 const artistsRouter = require('./routes/artists');
-const base_uri = process.env.BASE_URI;
+const musicBrainzRouter = require('./routes/musicBrainz');
+const base_uri = process.env.BASE_URI || '/api/v1';
+const chatRouter = require('./routes/chat');
 
 const app = express();
 
@@ -35,14 +37,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/', indexRouter);
+app.use(base_uri + '/', indexRouter);
 app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
 app.use(base_uri + '/artists', artistsRouter);
 app.use(base_uri + '/spotify-tracks', spotifyTracks);
-app.use(base_uri + '/weather', weatherRouter);
+app.use(base_uri + '/weather', weatherRoutes);
 app.use(base_uri + '/spotify', spotifyRouter);
+app.use(base_uri + '/musicbrainz', musicBrainzRouter);
+app.use(base_uri + '/chat', chatRouter);
+
+// Middleware para asegurar que se manejen los errores de la API externa sin que la aplicación se caiga
+app.use(apiErrorHandler);
 
 // Spotify API configuration
 const spotifyApi = new SpotifyWebApi({
@@ -59,11 +66,6 @@ spotifyApi.clientCredentialsGrant()
     .catch(error => {
         console.error('Authentication error:', error);
     });
-
-// Chat function
-app.get('/api/v1/chat', (req, res) => {
-    res.render('chat');
-});
 
 async function chat(userMessage) {
     const client = new openAI.OpenAI({
@@ -86,7 +88,7 @@ async function chat(userMessage) {
     }
 }
 
-app.post('/send-message', async (req, res) => {
+app.post(base_uri + '/send-message', async (req, res) => {
     const userMessage = req.body.message;
 
     try {
@@ -98,18 +100,15 @@ app.post('/send-message', async (req, res) => {
     }
 });
 
-app.get('/chat', (req, res) => {
-    res.render('chat');
-});
-
 // Error handler
 app.use(function(err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(err.status || 500);
     res.render('error');
+    console.error(err.stack);
 });
 
-console.log('App running on url: http://localhost:3000/api/v1/');
+console.log('App running on url: http://localhost:3000' + base_uri);
 
 module.exports = app;

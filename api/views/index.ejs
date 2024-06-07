@@ -1,10 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Álbumes</title>
+    <title>MusicHub</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            color: #1DB954; /* Verde Spotify */
+            background-color: #121212; /* Fondo negro/gris */
+        }
+        .sidebar {
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            transition: left 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .navbar-toggle {
+            background-color: transparent;
+            color: #1DB954;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2000;
+            font-size: 20px;
+        }
+        .navbar-toggle:hover {
+            color: #1ED760;
+        }
+        .sidebar h2 {
+            color: #1DB954;
+            text-align: center;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar ul li a:hover {
+            background-color: #444;
+        }
+        .container {
+            margin-left: 20px;
+            padding: 20px;
+        }
+        .main-content {
+            max-width: 800px;
+            margin: auto;
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .main-content h1 {
+            text-align: center;
+            color: #1DB954;
+        }
+        .main-content p {
+            text-align: center;
+            color: #ccc;
+        }
+        .cta-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #1DB954;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .cta-button:hover {
+            background-color: #1ED760;
+        }
+    </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
@@ -12,17 +105,32 @@
             <h2>MusicHub</h2>
         </div>
         <ul>
-            <li><a href="http://localhost:3000/api/v1/albums">Álbumes</a></li>
-            <li><a href="#">Canciones</a></li>
-            <li><a href="http://localhost:3000/api/v1/chat">Chat</a></li>
+            <li><a href="/api/v1/">Inicio</a></li>
+            <li><a href="/api/v1/albums">Álbumes</a></li>
+            <li><a href="/api/v1/tracks">Canciones</a></li>
+            <li><a href="/api/v1/chat">Chat</a></li>
+            <li><a href="/api/v1/spotify">Spotify</a></li>
+            <li><a href="/api/v1/musicbrainz">MusicBrainz</a></li>
         </ul>
     </div>
     <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
     <div class="container">
         <div class="main-content">
-                 
+            <h1>Bienvenido a MusicHub</h1>
+            <p>Tu plataforma definitiva para explorar, descubrir y disfrutar de la música. Accede a álbumes, canciones, y más. Interactúa con nuestros servicios y experimenta la mejor experiencia musical.</p>
+            <a href="/api/v1/albums" class="cta-button">Explorar Álbumes</a>
+            <a href="/api/v1/tracks" class="cta-button">Explorar Canciones</a>
         </div>
     </div>
-    <script src="/js/scripts.js"></script>
+    <script>
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            } else {
+                sidebar.classList.add('show');
+            }
+        });
+    </script>
 </body>
 </html>

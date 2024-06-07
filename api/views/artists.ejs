@@ -28,7 +28,6 @@
                     <ul>
                         <% artists.forEach(artist => { %>
                             <li>
-                                <h2><%= artist.artist_name %></h2>
                                 <p><strong>URI:</strong> <%= artist.artist_uris %></p>
                                 <p><strong>Artista:</strong> <%= artist.artist_names %></p>
                                 <img src="<%= artist.artist_image_url %>" alt="<%= artist.artist_name %>" style="max-width: 200px;">
@@ -57,43 +56,15 @@
             <div class="form-container">
                 <h2>(POST) Añadir Álbum</h2>
                 <form action="/api/v1/artists" method="POST">
-                    <label for="artist_name">Nombre del Artista:</label>
-                    <input type="text" id="artist_name" name="artist_name" required>
-
-                    <label for="artist_uri">URI del Artista:</label>
-                    <input type="text" id="artist_uri" name="artist_uri" required>
-
+                    <label for="artist_names">Nombres del Artista:</label>
+                    <input type="text" id="artist_names" name="artist_names" required>
+            
+                    <label for="artist_uris">URIs del Artista:</label>
+                    <input type="text" id="artist_uris" name="artist_uris" required>
+            
                     <button type="submit">Añadir Artista</button>
                 </form>
-            </div>
-            <div class="form-container">
-                <h2>(DELETE) Eliminar Álbum</h2>
-                    <form id="deleteForm" action="/api/v1/artists" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <!-- Campos del formulario de eliminar álbum -->
-                        <label for="artist_id">ID del artista a Eliminar:</label>
-                        <input type="text" id="artist_id" name="artist_id" required>
-                        <button type="submit">Eliminar Álbum</button>
-                    </form>
-            </div>
-            <div class="form-container">
-                <h2>(PUT)</h2>
-                    <form id="putForm" action="/api/v1/artists" method="POST">
-                        <input type="hidden" name="_method" value="PUT">
-
-                        <label for="artist_id">URI actual del artista:</label>
-                        <input type="text" id="artist_put" name="artist_put" required>
-
-                        <label for="artist_name">Nombre del artista:</label>
-                        <input type="text" id="artist_name_put" name="artist_name_put" required>
-
-                        <label for="artist_uri">Nueva URI del artista:</label>
-                        <input type="text" id="artist_uri_put" name="artist_uri_put" required>
-
-
-                        <button type="submit">put</button>
-                    </form>
-            </div>
+            </div>            
         </div>
     </div>
     <script src="/js/scriptsArtists.js"></script>

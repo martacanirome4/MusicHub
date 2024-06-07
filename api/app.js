@@ -16,7 +16,8 @@ const weatherRoutes = require('./routes/weather');
 const apiErrorHandler = require('./middleware/apiErrorHandler');
 const spotifyRouter = require('./routes/spotify');
 const musicBrainzRouter = require('./routes/musicBrainz');
-const base_uri = process.env.BASE_URI;
+const base_uri = process.env.BASE_URI || '/api/v1';
+const chatRouter = require('./routes/chat');
 
 const app = express();
 
@@ -35,7 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use(base_uri + '/', indexRouter); // Ajustar la ruta para manejar el prefijo
+app.use(base_uri + '/', indexRouter);
 app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
@@ -43,6 +44,7 @@ app.use(base_uri + '/spotify-tracks', spotifyTracks);
 app.use(base_uri + '/weather', weatherRoutes);
 app.use(base_uri + '/spotify', spotifyRouter);
 app.use(base_uri + '/musicbrainz', musicBrainzRouter);
+app.use(base_uri + '/chat', chatRouter);
 
 // Middleware para asegurar que se manejen los errores de la API externa sin que la aplicación se caiga
 app.use(apiErrorHandler);
@@ -62,11 +64,6 @@ spotifyApi.clientCredentialsGrant()
     .catch(error => {
         console.error('Authentication error:', error);
     });
-
-// Chat function
-app.get(base_uri + '/chat', (req, res) => {
-    res.render('chat');
-});
 
 async function chat(userMessage) {
     const client = new openAI.OpenAI({
@@ -99,10 +96,6 @@ app.post(base_uri + '/send-message', async (req, res) => {
         console.error('Error processing message:', error);
         res.status(500).json({ message: 'Error processing message' });
     }
-});
-
-app.get(base_uri + '/chat', (req, res) => {
-    res.render('chat');
 });
 
 // Error handler

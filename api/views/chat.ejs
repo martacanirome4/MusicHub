@@ -3,11 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Canciones de Spotify</title>
+    <title>MusicHub</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Fondo negro/gris */
+            color: #1DB954; /* Verde Spotify */
+        }
+        .sidebar {
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: -200px; /* Oculta la barra lateral inicialmente */
+            transition: left 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .navbar-toggle {
+            background-color: transparent;
+            color: #1DB954;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2000;
+            font-size: 20px;
+        }
+        .navbar-toggle:hover {
+            color: #1ED760;
+        }
+        .sidebar h2 {
+            color: #1DB954;
+            text-align: center;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar ul li a:hover {
+            background-color: #444;
+        }
+        .container {
+            margin-left: 20px;
+            padding: 20px;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #chat-container {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            width: 60%; /* Ajusta el ancho según sea necesario */
+            height: 80%; /* Ajusta la altura según sea necesario */
+            border: 2px solid #6a6a6a; /* Color del borde del chat */
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-messages {
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            margin-bottom: 10px;
+            flex-direction: column;
+            display: flex;
+        }
+        #input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+        }
+        #user-input {
+            width: calc(100% - 100px); /* Ancho del campo de entrada */
+            padding: 8px;
+            margin-right: 5px;
+            border-radius: 4px;
+            border: 1px solid #666;
+            background-color: #555555;
+            color: #fff;
+        }
+        #chat-messages > .user-message {
+            color: #ffffff; /* Color del texto del mensaje del usuario */
+            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 8px;
+            display: inline-block;
+            background-color: #1DB954;
+            align-self: flex-end;
+            max-width: 60%;
+        }
+        #chat-messages > .bot-message {
+            color: #fefefe; /* Color del texto del mensaje del bot */
+            margin-bottom: 10px;
+            border-radius: 10px;
+            padding: 8px;
+            background-color: #3e3d3d;
+            align-self: flex-start;
+            max-width: 60%;
+        }
+        #send-btn {
+            background-color: #1DB954;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #send-btn:hover {
+            background-color: #1ED760;
+        }
+        .chat-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
     <div class="sidebar" id="sidebar">
         <div class="header-container">
             <h2>MusicHub</h2>
@@ -21,55 +155,54 @@
             <li><a href="/api/v1/musicbrainz">MusicBrainz</a></li>
         </ul>
     </div>
+
+    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
     <div class="container" id="main-container">
-        <div class="main-content">
-            <h1>Buscador de Canciones de Spotify</h1>
-            <form id="spotifySearchForm">
-                <label for="query">Introduce el nombre de la canción:</label>
-                <input type="text" id="query" name="query" required>
-                <button type="submit">Buscar</button>
-            </form>
-            <div id="spotifyResult" style="margin-top: 20px;">
-                <!-- Track data will be displayed here -->
+        <div id="chat-container">
+            <div class="chat-header">
+                <h1>Chat</h1>
+            </div>
+            <div id="chat-messages"></div>
+            <div id="input-container">
+                <input type="text" id="user-input" placeholder="Type your message...">
+                <button id="send-btn">Send</button>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('navbar-toggle').addEventListener('click', function() {
-            var sidebar = document.getElementById('sidebar');
-            var container = document.getElementById('main-container');
-            if (sidebar.classList.contains('show')) {
-                sidebar.classList.remove('show');
-                container.classList.remove('shifted');
-            } else {
-                sidebar.classList.add('show');
-                container.classList.add('shifted');
-            }
+        const sidebar = document.getElementById('sidebar');
+        const navbarToggle = document.getElementById('navbar-toggle');
+        const mainContainer = document.getElementById('main-container');
+
+        navbarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+            mainContainer.classList.toggle('shifted');
         });
 
-        document.getElementById('spotifySearchForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const query = document.getElementById('query').value;
-            try {
-                const response = await fetch(`/api/v1/spotify/search?q=${encodeURIComponent(query)}`);
-                if (!response.ok) {
-                    throw new Error('Error fetching track data');
-                }
-                const data = await response.json();
-                document.getElementById('spotifyResult').innerHTML = data.map(track => `
-                    <div>
-                        <h2>${track.name}</h2>
-                        <p>Artists: ${track.artists.join(', ')}</p>
-                        <p>Album: ${track.album}</p>
-                        <p>Release Date: ${track.release_date}</p>
-                        <p><a href="${track.preview_url}" target="_blank">Preview Track</a></p>
-                    </div>
-                `).join('');
-            } catch (error) {
-                document.getElementById('spotifyResult').innerHTML = `
-                    <p style="color: red;">Error: ${error.message}</p>
-                `;
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML += `<div class="user-message"><strong>Tú: </strong> ${userInput}</div>`;
+            document.getElementById('user-input').value = ''; // Limpiar el campo de entrada
+            const response = await fetch('/api/v1/send-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            });
+            const data = await response.json();
+            chatMessages.innerHTML += `<div class="bot-message"><strong>MusicHub: </strong> ${data.message}</div>`;
+        }
+
+        // Agregar un evento de clic al botón de enviar
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+
+        // Agregar un evento de tecla Enter al campo de entrada para enviar el mensaje
+        document.getElementById('user-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
             }
         });
     </script>

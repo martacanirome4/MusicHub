@@ -27,8 +27,8 @@ router.get('/', async (req, res) => {
 
   // Procesar los resultados para tomar solo el primer elemento de artist_uris y artist_names
   results = results.map(artist => {
-      artist.artist_uris = artist.artist_uris[0] || '';
-      artist.artist_names = artist.artist_names[0] || '';
+      artist.artist_uris = Array.isArray(artist.artist_uris) ? artist.artist_uris[0] || '' : '';
+      artist.artist_names = Array.isArray(artist.artist_names) ? artist.artist_names[0] || '' : '';
       return artist;
   });
 

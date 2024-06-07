@@ -19,7 +19,6 @@ router.get('/', async (req, res) => {
   };
   
   const dbConnect = dbo.getDb();
-  
 
   let results = await dbConnect
       .collection('music')
@@ -27,8 +26,7 @@ router.get('/', async (req, res) => {
       .sort({ _id: -1 })
       .limit(MAX_RESULTS) 
       .toArray()
-      .catch(err => res.status(400).send('Error al buscar artista'));
-  
+      .catch(err => res.status(400).send('Error al buscar artista')); 
 
   next = results.length > 0 ? results[results.length - 1]._id : null;
 
@@ -37,28 +35,29 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:artist_uri', async (req, res) => {
-  const artistUri = decodeURIComponent(req.params.artist_uri);
+  const artistUri = decodeURIComponent(req.params.track_uri);
   const dbConnect = dbo.getDb();
-  const limit = 1; 
-  const next = req.query.next ? parseInt(req.query.next, 1) : 0; 
+  const limit = 1; // Limita la cantidad de resultados por página
+  const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
 
   try {
       // Buscar el álbum por su URI
       const artists = await dbConnect.collection('music')
-          .find({ artist_uris: artistUri })
-          .skip(next) 
-          .limit(limit) 
+          .find({ artist_uri: artistUri })
+          .skip(next) // Saltar los primeros 'next' resultados para la paginación
+          .limit(limit) // Limitar los resultados a 'limit'
           .toArray();
 
+      // Si no se encuentran álbumes, devolver un mensaje de error
       if (!artists.length) {
-          return res.status(404).render('artists', { artists: [], message: 'artista no encontrado' });
+          return res.status(404).render('artists', { artists: [], message: 'Artista no encontrado' });
       }
 
-
+      // Calcular el valor del próximo 'next' para la siguiente página
       const nextPage = artists.length === limit ? next + limit : null;
 
-
-      res.status(200).render('artista', { artists, next: nextPage, message: '' });
+      // Renderizar la vista con los álbumes encontrados y el valor de 'nextPage'
+      res.status(200).render('artists', { artists, next: nextPage, message: '' });
   } catch (err) {
       res.status(500).send('Error al buscar el artista');
   }

@@ -15,7 +15,7 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const spotifyTracks = require('./routes/spotifyTracks');
 const weatherRouter = require('./routes/weather');
 const spotifyRouter = require('./routes/spotify');
-const spotifyRouter = require('./routes/artists');
+const artistsRouter = require('./routes/artists');
 const base_uri = process.env.BASE_URI;
 
 const app = express();
@@ -39,7 +39,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use(base_uri + '/tracks', tracksRouter);
 app.use(base_uri + '/albums', albumsRouter);
-app.use(base_uri + '/artists', albumsRouter);
+app.use(base_uri + '/artists', artistsRouter);
 app.use(base_uri + '/spotify-tracks', spotifyTracks);
 app.use(base_uri + '/weather', weatherRouter);
 app.use(base_uri + '/spotify', spotifyRouter);

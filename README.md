@@ -23,7 +23,7 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 
 1. Clona este repositorio:
     ```bash
-    git clone https://github.com/martacanirome4/MusicHub
+    git clone https://github.com/martacanirome4/MusicHub.git
     cd MusicHub/api
     ```
 
@@ -42,7 +42,21 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     MAX_RESULTS=10
     ```
 
-4. Inicia el servidor:
+4. Carga los datos iniciales en la base de datos MongoDB:
+
+    - Instala las dependencias necesarias (si aún no lo has hecho):
+
+        ```bash
+        npm install mongodb dotenv
+        ```
+
+    - Ejecuta el script para cargar los datos:
+
+        ```bash
+        node loadData.js
+        ```
+
+5. Inicia el servidor:
     ```bash
     npm start
     ```
@@ -62,6 +76,7 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 Busca un artista en MusicBrainz:
 ```bash
 GET /api/v1/musicbrainz/search?name=artista
+
 ```
 
 ## Temática

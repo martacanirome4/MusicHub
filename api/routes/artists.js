@@ -36,15 +36,16 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:artist_uri', async (req, res) => {
-  const artistUri = decodeURIComponent(req.params.track_uri);
+  const artistUri = decodeURIComponent(req.params.artist_uri);
   const dbConnect = dbo.getDb();
   const limit = 1; // Limita la cantidad de resultados por página
   const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
 
   try {
       // Buscar el álbum por su URI
+      console.log(artistUri)
       const artists = await dbConnect.collection('music')
-          .find({ artist_uri: artistUri })
+          .find({ artist_uris: artistUri })
           .skip(next) // Saltar los primeros 'next' resultados para la paginación
           .limit(limit) // Limitar los resultados a 'limit'
           .toArray();

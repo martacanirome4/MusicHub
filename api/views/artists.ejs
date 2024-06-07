@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Álbumes</title>
+    <title>Lista de Artistas</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -57,20 +57,11 @@
             <div class="form-container">
                 <h2>(POST) Añadir Álbum</h2>
                 <form action="/api/v1/artists" method="POST">
-                    <label for="album_name">Nombre del Álbum:</label>
-                    <input type="text" id="album_name" name="album_name" required>
+                    <label for="artist_name">Nombre del Artista:</label>
+                    <input type="text" id="artist_name" name="artist_name" required>
 
-                    <label for="album_uri">URI del Álbum:</label>
-                    <input type="text" id="album_uri" name="album_uri" required>
-
-                    <label for="artist_names">Nombres de los Artistas:</label>
-                    <input type="text" id="artist_names" name="artist_names" required>
-
-                    <label for="album_release_date">Fecha de Lanzamiento:</label>
-                    <input type="date" id="album_release_date" name="album_release_date" required>
-
-                    <label for="album_image_url">URL de la Imagen del Álbum:</label>
-                    <input type="text" id="album_image_url" name="album_image_url" required>
+                    <label for="artist_uri">URI del Artista:</label>
+                    <input type="text" id="artist_uri" name="artist_uri" required>
 
                     <button type="submit">Añadir Álbum</button>
                 </form>
@@ -80,8 +71,8 @@
                     <form id="deleteForm" action="/api/v1/artists" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <!-- Campos del formulario de eliminar álbum -->
-                        <label for="album_id">ID del Álbum a Eliminar:</label>
-                        <input type="text" id="album_id" name="album_id" required>
+                        <label for="artist_id">ID del artista a Eliminar:</label>
+                        <input type="text" id="artist_id" name="artist_id" required>
                         <button type="submit">Eliminar Álbum</button>
                     </form>
             </div>
@@ -89,25 +80,16 @@
                 <h2>(PUT)</h2>
                     <form id="putForm" action="/api/v1/artists" method="POST">
                         <input type="hidden" name="_method" value="PUT">
-                        <!-- Campos del formulario de eliminar álbum -->
 
-                        <label for="album_id">URI actual del Álbum:</label>
-                        <input type="text" id="album_put" name="album_put" required>
+                        <label for="artist_id">URI actual del artista:</label>
+                        <input type="text" id="artist_put" name="artist_put" required>
 
-                        <label for="album_name">Nombre del Álbum:</label>
-                        <input type="text" id="album_name_put" name="album_name_put" required>
+                        <label for="artist_name">Nombre del artista:</label>
+                        <input type="text" id="artist_name_put" name="artist_name_put" required>
 
-                        <label for="album_uri">Nueva URI del Álbum:</label>
-                        <input type="text" id="album_uri_put" name="album_uri_put" required>
+                        <label for="artist_uri">Nueva URI del artista:</label>
+                        <input type="text" id="artist_uri_put" name="artist_uri_put" required>
 
-                        <label for="artist_names">Nombres de los Artistas:</label>
-                        <input type="text" id="artist_names_put" name="artist_names_put" required>
-
-                        <label for="album_release_date">Fecha de Lanzamiento:</label>
-                        <input type="date" id="album_release_date_put" name="album_release_date_put" required>
-
-                        <label for="album_image_url">URL de la Imagen del Álbum:</label>
-                        <input type="text" id="album_image_url_put" name="album_image_url_put" required>
 
                         <button type="submit">put</button>
                     </form>

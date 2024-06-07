@@ -13,6 +13,14 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 - **Búsqueda de artistas en MusicBrainz**: Encuentra información detallada sobre artistas.
 - **Interfaz de usuario atractiva**: Interfaz moderna y fácil de usar inspirada en Spotify.
 
+## Contenido del Proyecto
+
+- **Archivo OpenAPI con la descripción del servicio**, '/api/schema/musichub.yaml'.
+- **Interfaz REST para la API**, '/api',
+- **Base de datos MongoDB**, '/dataset/musichub_dataset.csv' y '/dataset/musichub_dataset.csv'
+- **Script para cargar los datos iniciales en la base de datos**, '/setup/setup_musichub.sh'.
+- **Presentación de la API**, 'sw-MusicHub.pdf' y  'sw-MusicHub.pptx' en el directorio raíz.
+
 ## Requisitos
 
 - Node.js v14+

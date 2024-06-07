@@ -4,3 +4,10 @@ document.getElementById('searchForm').onsubmit = function(event) {
     // Redirigir a la URL correcta con el URI de la canción
     window.location.href = `/api/v1/artists/${encodeURIComponent(query)}`;
 };
+
+const sidebar = document.getElementById('sidebar');
+const navbarToggle = document.getElementById('navbar-toggle');
+        
+navbarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('show');
+});

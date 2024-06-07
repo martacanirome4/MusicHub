@@ -6,7 +6,6 @@ const ObjectId = require('mongodb').ObjectId;
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS);
 
 router.get('/', async (req, res) => {
-
   let next = req.query.next;
   let query = {};
 
@@ -17,20 +16,30 @@ router.get('/', async (req, res) => {
   const options = {
       projection: { _id: 0 }
   };
-  
+
   const dbConnect = dbo.getDb();
 
   let results = await dbConnect
       .collection('music')
-      .find(query)
+      .find(query, options)
       .sort({ _id: -1 })
-      .limit(MAX_RESULTS) 
+      .limit(MAX_RESULTS)
       .toArray()
-      .catch(err => res.status(400).send('Error al buscar artista')); 
+      .catch(err => res.status(400).send('Error al buscar artistas'));
+
+  // Ajustar los resultados para incluir solo el primer artist_uris y artist_names
+  results = results.map(result => {
+      if (Array.isArray(result.artist_uris) && result.artist_uris.length > 0) {
+          result.artist_uris = result.artist_uris[0];
+      }
+      if (Array.isArray(result.artist_names) && result.artist_names.length > 0) {
+          result.artist_names = result.artist_names[0];
+      }
+      return result;
+  });
 
   next = results.length > 0 ? results[results.length - 1]._id : null;
 
-  
   res.render('artists', { artists: results, next: next });
 });
 

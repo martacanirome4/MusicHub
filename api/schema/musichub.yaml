@@ -241,60 +241,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    put:
-      summary: Actualizar un artista específico.
-      parameters:
-        - $ref: '#/components/parameters/ArtistUriParam'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Artista'
-      responses:
-        200:
-          description: Artista actualizado con éxito.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Artista'
-        400:
-          description: Datos del artista inválidos.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        404:
-          description: Artista no encontrado.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        500:
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    delete:
-      summary: Eliminar un artista específico.
-      parameters:
-        - $ref: '#/components/parameters/ArtistUriParam'
-      responses:
-        204:
-          description: Artista eliminado con éxito.
-        404:
-          description: Artista no encontrado.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        500:
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+  
   # Rutas para el recurso "Álbumes"
   /albums:
     get:

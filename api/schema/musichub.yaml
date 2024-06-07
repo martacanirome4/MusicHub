@@ -241,9 +241,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
-
-
+  
   # Rutas para el recurso "Álbumes"
   /albums:
     get:
@@ -490,11 +488,6 @@ components:
           type: string
         artist_name:
           type: string
-        album_uri:
-          type: string
-        album_name:
-          type: string
-
     Album:
       type: object
       properties:

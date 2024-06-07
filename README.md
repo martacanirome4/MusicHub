@@ -50,10 +50,10 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
         npm install mongodb dotenv
         ```
 
-    - Ejecuta el script para cargar los datos:
+    - Ejecuta el script desde 'api/setp' para cargar los datos:
 
         ```bash
-        node loadData.js
+        ./setup_musichub.sh
         ```
 
 5. Inicia el servidor:

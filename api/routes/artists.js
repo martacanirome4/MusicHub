@@ -82,14 +82,14 @@ router.put('/:artist_uri', async (req, res) => {
 
   await dbConnect
     .collection('music')
-    .updateOne({artist_uri: artistUri}, {$set: updatedartist})
+    .updateOne({artist_uris: artistUri}, {$set: updatedartist})
     .then(result => {
       if (result.modifiedCount === 0) {
-        return res.status(404).json({message: 'Álbum no encontrado'});
+        return res.status(404).json({message: 'Artista no encontrado'});
       }
       res.json(updatedartist).status(200);
     })
-    .catch(err => res.status(400).send('Error al actualizar el álbum'));
+    .catch(err => res.status(400).send('Error al actualizar el artista'));
 });
 
 router.delete('/:artist_uri', async (req, res) => {

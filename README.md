@@ -71,13 +71,12 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     npm start
     ```
 7. Disfruta de la API:
+   
+    -  Introduce la siguiente URL en tu navegador y navega por sus recursos
 
-Introduce la siguiente URL en tu navegador y navega por sus recursos
-     ```bash
-    http://localhost:3000/api/v1
-    ```
-
-## Uso
+        ```bash
+        http://localhost:3000/api/v1
+        ```
 
 ### Endpoints Principales
 

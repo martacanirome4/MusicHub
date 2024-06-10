@@ -13,12 +13,16 @@ router.get('/', async (req, res) => {
         query = { _id: { $lt: new ObjectId(next) } };
     }
 
+    const options = {
+        projection: { _id: 0, artist_uris: 1, artist_names: 1}
+    };
+
     const dbConnect = dbo.getDb();
 
     try {
         let results = await dbConnect
             .collection('music')
-            .find(query)
+            .find(query, options)
             .sort({ _id: -1 })
             .limit(MAX_RESULTS)
             .toArray();
@@ -45,8 +49,12 @@ router.get('/:artist_uri', async (req, res) => {
     const next = req.query.next ? parseInt(req.query.next, 1) : 0;
 
     try {
+        const options = {
+            projection: { _id: 0, artist_uris: 1, artist_names: 1}
+        };
+        const query = { artist_uris: artistUri }
         const artists = await dbConnect.collection('music')
-            .find({ artist_uris: artistUri })
+            .find(query, options)
             .skip(next)
             .limit(limit)
             .toArray();

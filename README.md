@@ -1,6 +1,6 @@
 # MusicHub
 
-![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)
+![Version](https://img.shields.io/badge/version-2.0.0-yellow)
 
 ## Descripción
 
@@ -81,23 +81,27 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 
 ### Endpoints Principales de la API
 
-- **Álbumes**: `/api/v1/albums`
-- **Artistas**: `/api/v1/artists`
-- **Canciones**: `/api/v1/tracks`
+- **Álbumes**: `/albums`
+- **Artistas**: `/artists`
+- **Canciones**: `/tracks`
 
 ### Ejemplos de Solicitudes
 
-Mostrar los álbumes, con paginación:
+Obtener los álbumes (con paginación):
 ```bash
 GET http://localhost:3000/api/v1/albums
 
 ```
+Añadir un artista: 
+asegúrate de que {BASE_URI} = "http://localhost:3000/api/v1/artists"
+
+
 Buscar una canción de Spotify:
 ```bash
 GET http://localhost:3000/api/v1/spotify/search?name=supercalifragilisticexpialidocious
 
 ```
-Obtener metadata de un artista de MusicBrainz:
+Obtener metadatos de un artista de MusicBrainz:
 ```bash
 GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
 ```

@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 
     const options = {
-        projection: { _id: 0 }
+        projection: { _id: 0,  track_uri: 0, track_name: 0, artist_uris: 0, album_artist_uris: 0}
     };
   
     const dbConnect = dbo.getDb();
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
     try {
         let results = await dbConnect
             .collection('music')
-            .find(query)
+            .find(query, options)
             .sort({ _id: -1 })
             .limit(MAX_RESULTS)
             .toArray();
@@ -43,9 +43,14 @@ router.get('/:album_uri', async (req, res) => {
     const limit = 1;
     const next = req.query.next ? parseInt(req.query.next, 1) : 0;
 
+    const options = {
+        projection: { _id: 0,  track_uri: 0, track_name: 0, artist_uris: 0, album_artist_uris: 0}
+    };
+
     try {
+        const query = { album_uri: albumUri }
         const albums = await dbConnect.collection('music')
-            .find({ album_uri: albumUri })
+            .find(query, options)
             .skip(next)
             .limit(limit)
             .toArray();
@@ -101,31 +106,6 @@ router.delete('/:album_uri', async (req, res) => {
     }
 });
 
-// Ruta para obtener detalles del artista asociado a un álbum específico
-router.get('/:album_uri/artist', async (req, res) => {
-    const albumUri = decodeURIComponent(req.params.album_uri);
-    const dbConnect = dbo.getDb();
-
-    try {
-        const album = await dbConnect
-            .collection('music')
-            .findOne({ album_uri: albumUri });
-
-        if (!album) {
-            return res.status(404).json({ message: 'Álbum no encontrado' });
-        }
-
-        const artistDetails = {
-            artist_uris: album.artist_uris,
-            artist_names: album.artist_names
-        };
-
-        res.status(200).json(artistDetails);
-    } catch (err) {
-        res.status(500).json({ error: 'Error al buscar el artista asociado al álbum' });
-    }
-});
-
 // Ruta para añadir un nuevo álbum
 router.post('/', async (req, res) => {
     let newAlbum = req.body;
@@ -146,30 +126,5 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Ruta para obtener todas las canciones asociadas a un álbum específico
-router.get('/:album_uri/tracks', async (req, res) => {
-    const albumUri = decodeURIComponent(req.params.album_uri);
-    const dbConnect = dbo.getDb();
-
-    try {
-        const tracks = await dbConnect
-            .collection('music')
-            .find({ album_uri: albumUri })
-            .toArray();
-
-        if (!tracks.length) {
-            return res.status(404).json({ message: 'No se encontraron canciones asociadas al álbum' });
-        }
-
-        const tracksDetails = tracks.map(track => ({
-            track_uri: track.track_uri,
-            track_name: track.track_name
-        }));
-
-        res.status(200).json(tracksDetails);
-    } catch (err) {
-        res.status(500).json({ error: 'Error al buscar las canciones del álbum' });
-    }
-});
 
 module.exports = router;

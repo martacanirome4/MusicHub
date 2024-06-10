@@ -92,10 +92,6 @@ Obtener los álbumes (con paginación):
 GET http://localhost:3000/api/v1/albums
 
 ```
-Añadir un artista: 
-asegúrate de que {BASE_URI} = "http://localhost:3000/api/v1/artists"
-
-
 Buscar una canción de Spotify:
 ```bash
 GET http://localhost:3000/api/v1/spotify/search?name=supercalifragilisticexpialidocious
@@ -105,6 +101,10 @@ Obtener metadatos de un artista de MusicBrainz:
 ```bash
 GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
 ```
+Añadir un artista: 
+- asegúrate de que {BASE_URI} = **http://localhost:3000/api/v1/artists**
+![postartist](https://github.com/martacanirome4/MusicHub/assets/50625677/ebb53804-fa18-4419-bf0a-666e50f657a9)
+
 
 
 ## Temática

@@ -29,8 +29,6 @@ router.get('/', async (req, res) => {
             .toArray();
   
         next = results.length > 0 ? results[results.length - 1]._id : null;
-        console.log('hola')
-        console.log(next)
 
         res.json({ albums: results, next: next });
     } catch (err) {

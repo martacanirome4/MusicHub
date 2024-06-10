@@ -32,7 +32,7 @@ document.getElementById('searchForm').onsubmit = function(event) {
         console.error('Error:', error);
         // Manejar el error si la solicitud falla
     }
-};
+};*/
 
 document.getElementById('putForm').onsubmit = async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario
@@ -63,4 +63,4 @@ document.getElementById('putForm').onsubmit = async function(event) {
         console.error('Error:', error);
         // Manejar el error si la solicitud falla
     }
-};*/
+};

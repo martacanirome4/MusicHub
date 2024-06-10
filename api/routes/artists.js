@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 
     const options = {
-        projection: { _id: 0, artist_uris: 1, artist_names: 1}
+        projection: { _id: 1, artist_uris: 1, artist_names: 1}
     };
 
     const dbConnect = dbo.getDb();

@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
         query = { _id: { $lt: new ObjectId(next) } };
     }
     const options = {
-        projection: { _id: 0, track_uri: 1, track_name: 1, artist_names: 1, album_name: 1, album_uri: 1}
+        projection: { _id: 1, track_uri: 1, track_name: 1, artist_names: 1, album_name: 1, album_uri: 1}
     };
 
     const dbConnect = dbo.getDb();

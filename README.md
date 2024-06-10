@@ -1,6 +1,6 @@
 # MusicHub
 
-![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)
+![Version](https://img.shields.io/badge/version-2.0.0-yellow)
 
 ## Descripción
 
@@ -53,26 +53,21 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     MAX_RESULTS=10
     ```
 
-4. Carga los datos iniciales en la base de datos MongoDB:
-
-    - Instala las dependencias necesarias (si aún no lo has hecho):
-
-        ```bash
-        npm install mongodb dotenv
-        ```
-
-    - Ejecuta el script desde 'api/setp' para cargar los datos:
-
-        ```bash
-        ./setup_musichub.sh
-        ```
-
-5. Inicia el servidor:
+4. Inicia el servidor desde 'api/':
      ```bash
+    npm install
     npm start
     ```
-7. Disfruta de la API:
-   
+4. Inicia el cliente desde 'cliente':
+     ```bash
+    npm install
+    npm start
+    ```
+5. Disfruta de la API:
+    - En '/cliente/.env' asegúrate de lo siguiente:
+       ```bash
+       BASE_URI=/
+       ```
     -  Introduce la siguiente URL en tu navegador y navega por sus recursos
 
         ```bash
@@ -81,13 +76,13 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 
 ### Endpoints Principales de la API
 
-- **Álbumes**: `/api/v1/albums`
-- **Artistas**: `/api/v1/artists`
-- **Canciones**: `/api/v1/tracks`
+- **Álbumes**: `/albums`
+- **Artistas**: `/artists`
+- **Canciones**: `/tracks`
 
 ### Ejemplos de Solicitudes
 
-Mostrar los álbumes, con paginación:
+Obtener los álbumes (con paginación):
 ```bash
 GET http://localhost:3000/api/v1/albums
 
@@ -97,11 +92,13 @@ Buscar una canción de Spotify:
 GET http://localhost:3000/api/v1/spotify/search?name=supercalifragilisticexpialidocious
 
 ```
-Obtener metadata de un artista de MusicBrainz:
+Obtener metadatos de un artista de MusicBrainz:
 ```bash
 GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
 ```
-
+Añadir un artista: 
+- asegúrate de que {BASE_URI} = **http://localhost:3000/api/v1/artists**
+![postartist](https://github.com/martacanirome4/MusicHub/assets/50625677/ebb53804-fa18-4419-bf0a-666e50f657a9)
 
 ## Temática
 Música

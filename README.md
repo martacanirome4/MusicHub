@@ -53,12 +53,21 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     MAX_RESULTS=10
     ```
 
-4. Inicia el servidor:
+4. Inicia el servidor desde 'api/':
      ```bash
+    npm install
+    npm start
+    ```
+4. Inicia el cliente desde 'cliente':
+     ```bash
+    npm install
     npm start
     ```
 5. Disfruta de la API:
-   
+    - En '/cliente/.env' asegúrate de lo siguiente:
+       ```bash
+       BASE_URI=/
+       ```
     -  Introduce la siguiente URL en tu navegador y navega por sus recursos
 
         ```bash
@@ -90,8 +99,6 @@ GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
 Añadir un artista: 
 - asegúrate de que {BASE_URI} = **http://localhost:3000/api/v1/artists**
 ![postartist](https://github.com/martacanirome4/MusicHub/assets/50625677/ebb53804-fa18-4419-bf0a-666e50f657a9)
-
-
 
 ## Temática
 Música

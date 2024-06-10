@@ -16,12 +16,12 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 
 ## Contenido del Proyecto
 
-- **Interfaz REST para la API** --> '/api',
-- **Archivo OpenAPI con la descripción del servicio** --> '/api/schema/musichub.yaml',
-- **Interfaz de usuario para cliente** --> '/cliente',
-- **Base de datos MongoDB** --> '/dataset/musichub_dataset.json' y '/dataset/musichub_dataset.csv',
-- **Script para cargar los datos iniciales en la base de datos** --> '/setup/setup_musichub.sh',
-- **Presentación de la API** --> 'sw-MusicHub.pdf' y  'sw-MusicHub.pptx' en el directorio raíz.
+- **Interfaz REST para la API** (/api)
+- **Archivo OpenAPI con la descripción del servicio** (/api/schema/musichub.yaml')
+- **Interfaz de usuario para cliente** (/cliente)
+- **Base de datos MongoDB** (/dataset/musichub_dataset.json) (dataset/musichub_dataset.csv)
+- **Script para cargar los datos iniciales en la base de datos** (/setup/setup_musichub.sh)
+- **Presentación de la API** (sw-MusicHub.pdf)
 
 ## Requisitos
 
@@ -38,7 +38,7 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     cd MusicHub/
     ```
 
-3. Configura las variables de entorno en un archivo `.env` de 'api':
+3. Configura las variables de entorno en un archivo `.env` en '/api':
     ```env
     BASE_URI=/api/v1
     SPOTIFY_CLIENT_ID=tu-spotify-client-id
@@ -48,23 +48,26 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     MAX_RESULTS=10
     ```
 
-4. Inicia el servidor desde 'api/':
+4. Inicia el servidor desde '/api':
      ```bash
     npm install
     npm start
     ```
-4. Inicia el cliente desde:
-   Crea otro archivo '/.env' en '/cliente' y asegúrate de lo siguiente:
-   ```bash
+4. **Inicia el cliente desde '/cliente'**:
+   
+   Crea otro archivo '/.env' y asegúrate de tener lo siguiente:
+   ```env
    BASE_URI=/
    ```
-   Instalas las dependencias e inicia el lado del cliente:
+ 
+    Instala las dependencias e inicia el lado del cliente:
     ```bash
     npm install
     npm start
     ```
 5. Disfruta de la API:
-   Introduce la siguiente URL en tu navegador y navega por sus recursos
+   
+   Introduce la siguiente URL en tu navegador y navega por sus recursos:
    ```bash
    http://localhost:3003/
    ```
@@ -92,7 +95,7 @@ Obtener metadatos de un artista de MusicBrainz:
 GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
 ```
 Añadir un artista: 
-- asegúrate de que {BASE_URI} = **http://localhost:3000/api/v1/artists**
+({BASE_URI} = **http://localhost:3000/api/v1/**)
 ![postartist](https://github.com/martacanirome4/MusicHub/assets/50625677/ebb53804-fa18-4419-bf0a-666e50f657a9)
 
 ## Temática

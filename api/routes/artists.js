@@ -50,7 +50,7 @@ router.get('/:artist_uri', async (req, res) => {
 
     try {
         const options = {
-            projection: { _id: 0, artist_uris: 1, artist_names: 1}
+            projection: { _id: 1, artist_uris: 1, artist_names: 1}
         };
         const query = { artist_uris: artistUri }
         const artists = await dbConnect.collection('music')
@@ -64,7 +64,7 @@ router.get('/:artist_uri', async (req, res) => {
         }
 
         const nextPage = artists.length === limit ? next + limit : null;
-
+        console.log(artists)
         res.status(200).json({ artists, next: nextPage });
     } catch (err) {
         res.status(500).json({ error: 'Error al buscar el artista' });

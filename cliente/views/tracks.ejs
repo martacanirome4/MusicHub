@@ -57,7 +57,7 @@
             </div>            
             <div class="form-container">
                 <h2>(POST) Añadir Canción</h2>
-                <form id="addTrackForm" method="POST">
+                <form action="tracks" method="POST">
                     <label for="track_name">Nombre de la Canción:</label>
                     <input type="text" id="track_name" name="track_name" required>
             
@@ -78,14 +78,14 @@
             </div>
             <div class="form-container">
                 <h2>(DELETE) Eliminar Canción</h2>
-                    <form id="deleteForm" action="/api/v1/tracks" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <!-- Campos del formulario de eliminar álbum -->
-                        <label for="track_id">ID de la canción a Eliminar:</label>
-                        <input type="text" id="track_id" name="track_id" required>
-                        <button type="submit">Eliminar Canción</button>
-                    </form>
+                <form id="deleteForm">
+                    <label for="track_id">ID de la canción a Eliminar:</label>
+                    <input type="text" id="track_id" name="track_id" required>
+                    <button type="button" onclick="deleteTrack()">Eliminar Canción</button>
+                </form>
             </div>
+            
+            
             <div class="form-container">
                 <h2>(PUT)</h2>
                     <form id="putForm" action="/api/v1/tracks" method="POST">

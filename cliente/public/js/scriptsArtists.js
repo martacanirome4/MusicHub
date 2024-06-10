@@ -2,7 +2,7 @@ document.getElementById('searchForm').onsubmit = function(event) {
     event.preventDefault(); // Prevenir el envío del formulario
     const query = document.getElementById('search_query').value; // Obtener el valor de búsqueda
     // Redirigir a la URL correcta con el URI de la canción
-    window.location.href = `/api/v1/artists/${encodeURIComponent(query)}`;
+    window.location.href = `/artists/${encodeURIComponent(query)}`;
 };
 
 const sidebar = document.getElementById('sidebar');
@@ -12,7 +12,7 @@ navbarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('show');
 });
 
-document.getElementById('putForm').onsubmit = async function(event) {
+/*document.getElementById('putForm').onsubmit = async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario
 
     const artistUri = document.getElementById('artist_put').value; // URI actual del álbum
@@ -40,4 +40,4 @@ document.getElementById('putForm').onsubmit = async function(event) {
         console.error('Error:', error);
         // Manejar el error si la solicitud falla
     }
-};
+};*/

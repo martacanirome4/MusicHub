@@ -132,13 +132,20 @@ router.get('/:artist_uri/artist', async (req, res) => {
     }
   })
 
-router.post('/', async (req, res) => {
+  router.post('/', async (req, res) => {
     let newartist = req.body; 
 
     if (typeof newartist.artist_names === 'string') {
         newartist.artist_names = newartist.artist_names.split(',').map(name => name.trim());
     } else if (!Array.isArray(newartist.artist_names)) {
         newartist.artist_names = [];
+    }
+
+    // Si artist_uris es un string, conviértelo en un array
+    if (typeof newartist.artist_uris === 'string') {
+        newartist.artist_uris = newartist.artist_uris.split(',').map(uri => uri.trim());
+    } else if (!Array.isArray(newartist.artist_uris)) {
+        newartist.artist_uris = [];
     }
 
     const dbConnect = dbo.getDb();
@@ -150,5 +157,6 @@ router.post('/', async (req, res) => {
         res.status(400).json({ error: 'Error al añadir el artista' });
     }
 });
+
 
 module.exports = router;

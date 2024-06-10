@@ -78,10 +78,11 @@
             </div>
             <div class="form-container">
                 <h2>(DELETE) Eliminar Canción</h2>
-                <form id="deleteForm">
+                <form id="deleteForm" action="/tracks" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
                     <label for="track_id">ID de la canción a Eliminar:</label>
                     <input type="text" id="track_id" name="track_id" required>
-                    <button type="button" onclick="deleteTrack()">Eliminar Canción</button>
+                    <button type="submit">Eliminar Canción</button>
                 </form>
             </div>
             

@@ -13,12 +13,12 @@ document.getElementById('searchForm').onsubmit = function(event) {
     window.location.href = `/tracks/${encodeURIComponent(query)}`;
 };
 
-/*document.getElementById('deleteForm').onsubmit = async function(event) {
+document.getElementById('deleteForm').onsubmit = async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario
     const trackId = document.getElementById('track_id').value; // Obtener el ID del álbum
     // Enviar la solicitud DELETE
     try {
-        const response = await fetch(`/api/v1/tracks/${trackId}`, {
+        const response = await fetch(`/tracks/${trackId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -27,12 +27,12 @@ document.getElementById('searchForm').onsubmit = function(event) {
         });
         console.log(trackId)
         // Redirigir a la página de álbumes después de eliminar
-        window.location.href = '/api/v1/tracks';
+        window.location.href = '/tracks';
     } catch (error) {
         console.error('Error:', error);
         // Manejar el error si la solicitud falla
     }
-};*/
+};
 
 document.getElementById('putForm').onsubmit = async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario

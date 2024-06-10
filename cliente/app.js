@@ -15,6 +15,10 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const spotifyRouter = require('./routes/spotify');
 const musicBrainzRouter = require('./routes/musicBrainz');
 const chatRouter = require('./routes/chat');
+var tracksRouter = require('./routes/tracks');
+var artistsRouter = require('./routes/artists');
+
+
 var app = express();
 
 // view engine setup
@@ -33,6 +37,8 @@ app.use('/albums', apiRouter);
 app.use('/spotify', spotifyRouter);
 app.use('/musicBrainz', musicBrainzRouter);
 app.use('/chat', chatRouter);
+app.use('/tracks', tracksRouter);
+app.use('/artists', artistsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

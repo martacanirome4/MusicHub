@@ -4,20 +4,30 @@
 
 ## Descripción
 
-MusicHub es una API RESTful con temática musical desarrollada con Node.js y Express, que permite explorar y gestionar información musical a través de diversas fuentes de datos como MongoDB, Spotify y MusicBrainz.
+MusicHub es una API RESTful con temática musical desarrollada con Node.js y Express, que permite explorar y gestionar información musical a través de diversas fuentes de datos como MongoDB, Spotify y MusicBrainz, así como un chat integrado de OpenAI.
 
 ## Características
 
 - **Exploración de música**: Busca y explora álbumes, canciones y artistas.
+- **ChatBot**: Pide recomendaciones musicales o solicita información de artistas y canciones.
 - **Integración con Spotify**: Obtén y gestiona datos de música de Spotify.
 - **Búsqueda de artistas en MusicBrainz**: Encuentra información detallada sobre artistas.
 - **Interfaz de usuario atractiva**: Interfaz moderna y fácil de usar inspirada en Spotify.
+
+## Contenido del Proyecto
+
+- **Archivo OpenAPI con la descripción del servicio** --> '/api/schema/musichub.yaml'.
+- **Interfaz REST para la API** --> '/api',
+- **Base de datos MongoDB** --> '/dataset/musichub_dataset.json' y '/dataset/musichub_dataset.csv'
+- **Script para cargar los datos iniciales en la base de datos** --> '/setup/setup_musichub.sh'.
+- **Presentación de la API** --> 'sw-MusicHub.pdf' y  'sw-MusicHub.pptx' en el directorio raíz.
 
 ## Requisitos
 
 - Node.js v14+
 - MongoDB
-- Cuenta de desarrollador de Spotify
+- Cuenta de desarrollador de Spotify (para la key)
+- Cuenta de OpenAI (para la key)
 
 ## Instalación
 
@@ -57,11 +67,16 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
         ```
 
 5. Inicia el servidor:
-    ```bash
+     ```bash
     npm start
     ```
+7. Disfruta de la API:
+   
+    -  Introduce la siguiente URL en tu navegador y navega por sus recursos
 
-## Uso
+        ```bash
+        http://localhost:3000/api/v1
+        ```
 
 ### Endpoints Principales
 
@@ -87,4 +102,3 @@ Música
 - Xavier Alexander Mora
 - Guillermo Woivre
 - Marta Canino
-

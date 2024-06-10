@@ -122,7 +122,7 @@ router.get('/:artist_uri/artist', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: 'Error al buscar el artista' });
     }
-});
+  })
 
 router.post('/', async (req, res) => {
     let newartist = req.body; 
@@ -137,6 +137,7 @@ router.post('/', async (req, res) => {
     try {
         const result = await dbConnect.collection('music').insertOne(newartist);
         res.status(201).json({ message: 'Artista añadido correctamente' });
+
     } catch (err) {
         res.status(400).json({ error: 'Error al añadir el artista' });
     }

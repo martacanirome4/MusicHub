@@ -1,10 +1,12 @@
 // routes/api.js
-var express = require('express');
-var router = express.Router();
-var apiClient = require('../services/musicHub');
+const express = require('express');
+const router = express.Router();
+const axios = require('axios');
+const baseURL = 'http://localhost:3000/api/v1';
+const apiClient = axios.create({
+  baseURL,
+});
 
-
-const MAX_RESULTS = 10; // Define el número máximo de resultados por página
 
 router.get('/', async (req, res) => {
   // Obtener el valor de `next` de la consulta
@@ -18,11 +20,11 @@ router.get('/', async (req, res) => {
   
   try {
     // Realizar la llamada a la API para obtener los álbumes
-    const response = await apiClient.llamarAPI(url);
-    const albums = response.albums;
+    const response = await apiClient.get(url);;
+    const albums = response.data.albums;
     
     // Calcular el valor de `next` para el siguiente conjunto de álbumes
-    const next = response.next; // Asegúrate de definir `next` aquí
+    const next = response.data.next; // Asegúrate de definir `next` aquí
     
     // Renderizar la plantilla EJS con los resultados de la consulta y el valor de `next`
     res.render('albums', { albums, next });

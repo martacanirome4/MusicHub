@@ -3,119 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Álbumes</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Cliente de Álbumes</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #00ff00;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #00ff00;
+        }
+        .album-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            background-color: #212121;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            border: 1px solid #00ff00;
+            background-color: #121212;
+            color: #00ff00;
+        }
+        input[type="submit"], button {
+            padding: 5px 10px;
+            background-color: #00ff00;
+            color: #121212;
+            border: none;
+            cursor: pointer;
+        }
+        button {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <div class="header-container">
-            <h2>MusicHub</h2>
-        </div>
-        <ul>
-            <li><a href="/api/v1/">Inicio</a></li>
-            <li><a href="/api/v1/albums">Álbumes</a></li>
-            <li><a href="/api/v1/tracks">Canciones</a></li>
-            <li><a href="/api/v1/artists">Artistas</a></li>
-            <li><a href="/api/v1/chat">Chat</a></li>
-            <li><a href="/api/v1/spotify">Spotify</a></li>
-            <li><a href="/api/v1/musicbrainz">MusicBrainz</a></li>
-        </ul>
-    </div>
-    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
-    <div class="container">
-        <div class="main-content">
-            <h1>Lista de Álbumes</h1>
-                <% if (albums.length > 0) { %>
-                    <ul>
-                        <% albums.forEach(album => { %>
-                            <li>
-                                <h2><%= album.album_name %></h2>
-                                <p><strong>URI:</strong> <%= album.album_uri %></p>
-                                <p><strong>Artista:</strong> <%= Array.isArray(album.artist_names) ? album.artist_names.join(', ') : album.artist_names %></p>
-                                <p><strong>Fecha de lanzamiento:</strong> <%= album.album_release_date %></p>
-                                <img src="<%= album.album_image_url %>" alt="<%= album.album_name %>" style="max-width: 200px;">
-                            </li>
-                        <% }); %>
-                    </ul>
-                    <% if (next) { %>
-                        <div style="text-align: center;">
-                            <button onclick="window.location.href='/api/v1/albums?next=<%= next %>'">Siguiente</button>
-                        </div>
-                    <% } %>
-                <% } else { %>
-                    <p class="no-albums"><%= message || 'No se encontraron álbumes.' %></p>
-                <% } %>
-        </div>
-        <div class="form-list">
-            <div class="form-container">
-                <h2>(GET) Barra de Búsqueda</h2>
-                <!-- El formulario no necesita action ya que se manejará mediante JavaScript -->
-                <form id="searchForm" method="GET">
-                    <label for="search_query">Buscar álbum por URI:</label>
-                    <input type="text" id="search_query" name="search_query" required>
-                    <button type="submit">Buscar</button>
-                </form>
-            </div>
-            <div class="form-container">
-                <h2>(POST) Añadir Álbum</h2>
-                <form action="/api/v1/albums" method="POST">
-                    <label for="album_name">Nombre del Álbum:</label>
-                    <input type="text" id="album_name" name="album_name" required>
+    <h1>Lista de Álbumes</h1>
 
-                    <label for="album_uri">URI del Álbum:</label>
-                    <input type="text" id="album_uri" name="album_uri" required>
+    <div id="albums-container"></div>
 
-                    <label for="artist_names">Nombres de los Artistas:</label>
-                    <input type="text" id="artist_names" name="artist_names" required>
+    <h2>Añadir Nuevo Álbum</h2>
+    <form id="add-album-form">
+        <label for="album-name">Nombre:</label>
+        <input type="text" id="album-name" name="name" required><br>
+        <label for="artist-names">Artista(s):</label>
+        <input type="text" id="artist-names" name="artist_names" required><br>
+        <label for="release-year">Año de Lanzamiento:</label>
+        <input type="text" id="release-year" name="release_year" required><br>
+        <label for="genre">Género:</label>
+        <input type="text" id="genre" name="genre" required><br>
+        <input type="submit" value="Añadir Álbum">
+    </form>
 
-                    <label for="album_release_date">Fecha de Lanzamiento:</label>
-                    <input type="date" id="album_release_date" name="album_release_date" required>
+    <script>
+        function getAlbums() {
+            fetch('/api/albums')
+                .then(response => response.json())
+                .then(data => {
+                    const albumsContainer = document.getElementById('albums-container');
+                    albumsContainer.innerHTML = '';
 
-                    <label for="album_image_url">URL de la Imagen del Álbum:</label>
-                    <input type="text" id="album_image_url" name="album_image_url" required>
+                    data.albums.forEach(album => {
+                        const albumElement = document.createElement('div');
+                        albumElement.classList.add('album-container');
+                        albumElement.innerHTML = `
+                            <h2>${album.name}</h2>
+                            <p><strong>Artista(s):</strong> ${album.artist_names.join(', ')}</p>
+                            <p><strong>Año de lanzamiento:</strong> ${album.release_year}</p>
+                            <p><strong>Género:</strong> ${album.genre}</p>
+                            <button onclick="editAlbum('${album.album_uri}')">Editar</button>
+                            <button onclick="deleteAlbum('${album.album_uri}')">Borrar</button>
+                        `;
+                        albumsContainer.appendChild(albumElement);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener la lista de álbumes:', error);
+                });
+        }
 
-                    <button type="submit">Añadir Álbum</button>
-                </form>
-            </div>
-            <div class="form-container">
-                <h2>(DELETE) Eliminar Álbum</h2>
-                    <form id="deleteForm" action="/api/v1/albums" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <!-- Campos del formulario de eliminar álbum -->
-                        <label for="album_id">ID del Álbum a Eliminar:</label>
-                        <input type="text" id="album_id" name="album_id" required>
-                        <button type="submit">Eliminar Álbum</button>
-                    </form>
-            </div>
-            <div class="form-container">
-                <h2>(PUT)</h2>
-                    <form id="putForm" action="/api/v1/albums" method="POST">
-                        <input type="hidden" name="_method" value="PUT">
-                        <!-- Campos del formulario de eliminar álbum -->
+        getAlbums();
 
-                        <label for="album_id">URI actual del Álbum:</label>
-                        <input type="text" id="album_put" name="album_put" required>
+        const addAlbumForm = document.getElementById('add-album-form');
+        addAlbumForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const formData = new FormData(addAlbumForm);
+            const albumData = {};
+            formData.forEach((value, key) => {
+                albumData[key] = value;
+            });
+            fetch('/api/albums', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(albumData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                getAlbums();
+            })
+            .catch(error => {
+                console.error('Error al añadir el álbum:', error);
+            });
+        });
 
-                        <label for="album_name">Nombre del Álbum:</label>
-                        <input type="text" id="album_name_put" name="album_name_put" required>
+        function editAlbum(albumUri) {
+            const newName = prompt('Introduce el nuevo nombre del álbum:');
+            if (newName) {
+                fetch(`/api/albums/${encodeURIComponent(albumUri)}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: newName })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    getAlbums();
+                })
+                .catch(error => {
+                    console.error('Error al editar el álbum:', error);
+                });
+            }
+        }
 
-                        <label for="album_uri">Nueva URI del Álbum:</label>
-                        <input type="text" id="album_uri_put" name="album_uri_put" required>
-
-                        <label for="artist_names">Nombres de los Artistas:</label>
-                        <input type="text" id="artist_names_put" name="artist_names_put" required>
-
-                        <label for="album_release_date">Fecha de Lanzamiento:</label>
-                        <input type="date" id="album_release_date_put" name="album_release_date_put" required>
-
-                        <label for="album_image_url">URL de la Imagen del Álbum:</label>
-                        <input type="text" id="album_image_url_put" name="album_image_url_put" required>
-
-                        <button type="submit">put</button>
-                    </form>
-            </div>
-        </div>
-    </div>
-    <script src="/js/scripts.js"></script>
+        function deleteAlbum(albumUri) {
+            if (confirm('¿Seguro que deseas borrar este álbum?')) {
+                fetch(`/api/albums/${encodeURIComponent(albumUri)}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    getAlbums();
+                })
+                .catch(error => {
+                    console.error('Error al borrar el álbum:', error);
+                });
+            }
+        }
+    </script>
 </body>
 </html>

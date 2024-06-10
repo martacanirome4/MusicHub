@@ -48,6 +48,58 @@ app.use(base_uri + '/spotify', spotifyRouter);
 app.use(base_uri + '/musicbrainz', musicBrainzRouter);
 app.use(base_uri + '/chat', chatRouter);
 
+// Middleware para asegurar que se manejen los errores de la API externa sin que la aplicación se caiga
+app.use(apiErrorHandler);
+
+// Spotify API configuration
+const spotifyApi = new SpotifyWebApi({
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
+
+// Spotify API authentication
+spotifyApi.clientCredentialsGrant()
+    .then(data => {
+        console.log('Authenticated successfully');
+        spotifyApi.setAccessToken(data.body['access_token']);
+    })
+    .catch(error => {
+        console.error('Authentication error:', error);
+    });
+
+async function chat(userMessage) {
+    const client = new openAI.OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+    });
+
+    try {
+        const completion = await client.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                { role: "system", content: "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair." },
+                { role: "user", content: userMessage }
+            ]
+        });
+
+        return completion.choices[0].message.content;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+app.post(base_uri + '/send-message', async (req, res) => {
+    const userMessage = req.body.message;
+
+    try {
+        const response = await chat(userMessage);
+        res.json({ message: response });
+    } catch (error) {
+        console.error('Error processing message:', error);
+        res.status(500).json({ message: 'Error processing message' });
+    }
+});
+
 // Error handler
 app.use(function(err, req, res, next) {
     res.locals.message = err.message;
@@ -57,5 +109,6 @@ app.use(function(err, req, res, next) {
     console.error(err.stack);
 });
 
+console.log('App running on url: http://localhost:3000' + base_uri);
 
 module.exports = app;

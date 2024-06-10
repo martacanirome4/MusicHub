@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Artistas</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="header-container">
+            <h2>MusicHub</h2>
+        </div>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/albums">Álbumes</a></li>
+            <li><a href="/tracks">Canciones</a></li>
+            <li><a href="/artists">Artistas</a></li>
+            <li><a href="/chat">Chat</a></li>
+            <li><a href="/spotify">Spotify</a></li>
+            <li><a href="/musicbrainz">MusicBrainz</a></li>
+        </ul>
+    </div>
+    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+    <div class="container">
+        <div class="main-content">
+            <h1>Lista de Artistas</h1>
+                <% if (artists.length > 0) { %>
+                    <ul>
+                        <% artists.forEach(artist => { %>
+                            <li>
+                                <p><strong>URI:</strong> <%= artist.artist_uris %></p>
+                                <p><strong>Artista:</strong> <%= artist.artist_names %></p>
+                                <img src="<%= artist.artist_image_url %>" alt="<%= artist.artist_name %>" style="max-width: 200px;">
+                            </li>
+                        <% }); %>
+                    </ul>
+                    <% if (next) { %>
+                        <div style="text-align: center;">
+                            <button onclick="window.location.href='/api/v1/artists?next=<%= next %>'">Siguiente</button>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p class="no-artists"><%= message || 'No se encontraron artistas.' %></p>
+                <% } %>
+        </div>
+        <div class="form-list">
+            <div class="form-container">
+                <h2>(GET) Barra de Búsqueda</h2>
+                <!-- El formulario no necesita action ya que se manejará mediante JavaScript -->
+                <form id="searchForm" method="GET">
+                    <label for="search_query">Buscar artista por URI:</label>
+                    <input type="text" id="search_query" name="search_query" required>
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>(POST) Añadir Álbum</h2>
+                <form action="/api/v1/artists" method="POST">
+                    <label for="artist_names">Nombres del Artista:</label>
+                    <input type="text" id="artist_names" name="artist_names" required>
+            
+                    <label for="artist_uris">URIs del Artista:</label>
+                    <input type="text" id="artist_uris" name="artist_uris" required>
+            
+                    <button type="submit">Añadir Artista</button>
+                </form>
+            </div>            
+        </div>
+    </div>
+    <script src="/js/scriptsArtists.js"></script>
+</body>
+</html>

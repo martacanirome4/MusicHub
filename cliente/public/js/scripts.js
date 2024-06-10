@@ -25,7 +25,7 @@ document.getElementById('putForm').onsubmit = async function(event) {
     };
 
     try {
-        const response = await fetch(`/api/v1/albums/${albumUri}`, {
+        const response = await fetch(`/albums/${albumUri}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ document.getElementById('putForm').onsubmit = async function(event) {
         });
         console.log(albumUri)
         // Redirigir a la página de álbumes después de eliminar
-        window.location.href = '/api/v1/albums';
+        window.location.href = '/albums';
     } catch (error) {
         console.error('Error:', error);
         // Manejar el error si la solicitud falla

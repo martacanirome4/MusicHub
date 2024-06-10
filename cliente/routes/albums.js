@@ -39,9 +39,9 @@ router.post('/', async (req, res) => {
     let url = '/albums';
     await apiClient.post(url, newAlbum);
     res.redirect(req.get('referer'));
-  }); 
+}); 
 
-  router.get('/:album_uri', async (req, res) => {
+router.get('/:album_uri', async (req, res) => {
     const albumUri = encodeURIComponent(req.params.album_uri);
     let next = req.query.next ? parseInt(req.query.next, 10) : 0;
 
@@ -64,6 +64,14 @@ router.post('/', async (req, res) => {
         console.error('Error al obtener álbum de la API:', error);
         res.status(500).send('Error al obtener álbum de la API');
     }
+});
+
+router.put('/:album_uri', async (req, res) => {
+    const albumUri = decodeURIComponent(req.params.album_uri);
+    const updatedAlbum = req.body;
+    const url = `/albums/${albumUri}`;
+    await apiClient.put(url, updatedAlbum);
+    res.redirect(req.get('referer'));
 });
 
 module.exports = router;

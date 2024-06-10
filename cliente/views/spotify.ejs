@@ -1,0 +1,171 @@
+<!--cliente/views/spotify.ejs-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de canciones de Spotify</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Fondo negro/gris */
+            color: #1DB954; /* Verde Spotify */
+        }
+        .sidebar {
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: -200px; /* Oculta la barra lateral inicialmente */
+            transition: left 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .navbar-toggle {
+            background-color: transparent;
+            color: #1DB954;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2000;
+            font-size: 20px;
+        }
+        .navbar-toggle:hover {
+            color: #1ED760;
+        }
+        .sidebar h2 {
+            color: #1DB954;
+            text-align: center;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar ul li a:hover {
+            background-color: #444;
+        }
+        .container {
+            margin-left: 20px;
+            padding: 20px;
+        }
+        .main-content {
+            max-width: 800px;
+            margin: auto;
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+        pre {
+            background: #f4f4f4;
+            color: #333;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: calc(100% - 22px); /* Full width - padding */
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1ED760;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="header-container">
+            <h2>MusicHub</h2>
+        </div>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/albums">Álbumes</a></li>
+            <li><a href="/tracks">Canciones</a></li>
+            <li><a href="/artists">Artistas</a></li>
+            <li><a href="/chat">Chat</a></li>
+            <li><a href="/spotify">Spotify</a></li>
+            <li><a href="/musicbrainz">MusicBrainz</a></li>
+        </ul>
+    </div>
+    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+    <div class="container">
+        <div class="main-content">
+            <h1>Buscador de canciones de Spotify</h1>
+            <form id="spotifySearchForm">
+                <label for="query">Introduce el nombre de la canción:</label>
+                <input type="text" id="query" name="query" required>
+                <button type="submit">Buscar</button>
+            </form>
+            <div id="spotifyResult" style="margin-top: 20px;">
+                <!-- Track data will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('spotifySearchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const query = document.getElementById('query').value;
+            try {
+                const response = await fetch(`/spotify/search?q=${encodeURIComponent(query)}`);
+                if (!response.ok) {
+                    throw new Error('Error fetching track data');
+                }
+                const data = await response.json();
+                document.getElementById('spotifyResult').innerHTML = data.map(track => `
+                    <div>
+                        <h2>${track.name}</h2>
+                        <p>Artistas: ${track.artists.join(', ')}</p>
+                        <p>Álbum: ${track.album}</p>
+                        <p>Fecha de lanzamiento: ${track.release_date}</p>
+                        <p><a href="${track.preview_url}" target="_blank">Previsualizar canción</a></p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('spotifyResult').innerHTML = `
+                    <p style="color: red;">Error: ${error.message}</p>
+                `;
+            }
+        });
+
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            } else {
+                sidebar.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

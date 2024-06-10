@@ -58,7 +58,7 @@
             </div>
             <div class="form-container">
                 <h2>(POST) Añadir Álbum</h2>
-                <form action="/api/v1/albums" method="POST">
+                <form action="albums" method="POST">
                     <label for="album_name">Nombre del Álbum:</label>
                     <input type="text" id="album_name" name="album_name" required>
 
@@ -89,7 +89,7 @@
             </div>
             <div class="form-container">
                 <h2>(PUT)</h2>
-                    <form id="putForm" action="/api/v1/albums" method="POST">
+                    <form id="putForm" action="/albums" method="POST">
                         <input type="hidden" name="_method" value="PUT">
                         <!-- Campos del formulario de eliminar álbum -->
 

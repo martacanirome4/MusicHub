@@ -69,4 +69,12 @@ router.get('/:track_uri', async (req, res) => {
 });
 
 
+router.put('/:track_uri', async (req, res) => {
+  const trackUri = decodeURIComponent(req.params.track_uri);
+  const updatedTrack = req.body;
+  const url = `/tracks/${trackUri}`;
+  await apiClient.put(url, updatedTrack);
+  res.redirect(req.get('referer'));
+});
+
 module.exports = router;

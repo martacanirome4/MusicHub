@@ -35,5 +35,13 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/', async (req, res) => {
+  let newTrack = req.body;
+  let url = '/tracks';
+  await apiClient.post(url, newTrack);
+  res.redirect(req.get('referer'));
+}); 
+
+
 
 module.exports = router;

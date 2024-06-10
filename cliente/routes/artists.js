@@ -35,5 +35,12 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/', async (req, res) => {
+  let newArtist = req.body;
+  let url = '/artist';
+  await apiClient.post(url, newArtist);
+  res.redirect(req.get('referer'));
+}); 
+
 
 module.exports = router;

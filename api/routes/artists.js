@@ -1,131 +1,131 @@
-require('dotenv').config(); // Importar configuraciones de entorno
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
-const dbo = require('../db/conn'); // Asegúrate de que esta ruta sea correcta
+const dbo = require('../db/conn');
 const ObjectId = require('mongodb').ObjectId;
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS);
 
 router.get('/', async (req, res) => {
-  let next = req.query.next;
-  let query = {};
+    let next = req.query.next;
+    let query = {};
 
-  if (next) {
-      query = { _id: { $lt: new ObjectId(next) } };
-  }
+    if (next) {
+        query = { _id: { $lt: new ObjectId(next) } };
+    }
 
-  const dbConnect = dbo.getDb();
+    const dbConnect = dbo.getDb();
 
-  let results = await dbConnect
-      .collection('music')
-      .find(query)
-      .sort({ _id: -1 })
-      .limit(MAX_RESULTS)
-      .toArray()
-      .catch(err => res.status(400).send('Error al buscar artista'));
+    try {
+        let results = await dbConnect
+            .collection('music')
+            .find(query)
+            .sort({ _id: -1 })
+            .limit(MAX_RESULTS)
+            .toArray();
 
-  next = results.length > 0 ? results[results.length - 1]._id : null;
+        next = results.length > 0 ? results[results.length - 1]._id : null;
 
-  // Procesar los resultados para tomar solo el primer elemento de artist_uris y artist_names
-  results = results.map(artist => {
-      artist.artist_uris = Array.isArray(artist.artist_uris) ? artist.artist_uris[0] || '' : '';
-      artist.artist_names = Array.isArray(artist.artist_names) ? artist.artist_names[0] || '' : '';
-      return artist;
-  });
+        // Procesar los resultados para tomar solo el primer elemento de artist_uris y artist_names
+        results = results.map(artist => {
+            artist.artist_uris = Array.isArray(artist.artist_uris) ? artist.artist_uris[0] || '' : '';
+            artist.artist_names = Array.isArray(artist.artist_names) ? artist.artist_names[0] || '' : '';
+            return artist;
+        });
 
-  res.render('artists', { artists: results, next: next });
+        res.json({ artists: results, next: next });
+    } catch (err) {
+        res.status(400).json({ error: 'Error al buscar artistas' });
+    }
 });
 
 router.get('/:artist_uri', async (req, res) => {
-  const artistUri = decodeURIComponent(req.params.artist_uri);
-  const dbConnect = dbo.getDb();
-  const limit = 1; // Limita la cantidad de resultados por página
-  const next = req.query.next ? parseInt(req.query.next, 1) : 0; // Obtener el parámetro 'next' o usar 0
+    const artistUri = decodeURIComponent(req.params.artist_uri);
+    const dbConnect = dbo.getDb();
+    const limit = 1;
+    const next = req.query.next ? parseInt(req.query.next, 1) : 0;
 
-  try {
-      // Buscar el álbum por su URI
-      console.log(artistUri)
-      const artists = await dbConnect.collection('music')
-          .find({ artist_uris: artistUri })
-          .skip(next) // Saltar los primeros 'next' resultados para la paginación
-          .limit(limit) // Limitar los resultados a 'limit'
-          .toArray();
+    try {
+        const artists = await dbConnect.collection('music')
+            .find({ artist_uris: artistUri })
+            .skip(next)
+            .limit(limit)
+            .toArray();
 
-      // Si no se encuentran álbumes, devolver un mensaje de error
-      if (!artists.length) {
-          return res.status(404).render('artists', { artists: [], message: 'Artista no encontrado' });
-      }
+        if (!artists.length) {
+            return res.status(404).json({ message: 'Artista no encontrado' });
+        }
 
-      // Calcular el valor del próximo 'next' para la siguiente página
-      const nextPage = artists.length === limit ? next + limit : null;
+        const nextPage = artists.length === limit ? next + limit : null;
 
-      // Renderizar la vista con los álbumes encontrados y el valor de 'nextPage'
-      res.status(200).render('artists', { artists, next: nextPage, message: '' });
-  } catch (err) {
-      res.status(500).send('Error al buscar ');
-  }
+        res.status(200).json({ artists, next: nextPage });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al buscar el artista' });
+    }
 });
 
-
-
 router.put('/:artist_uri', async (req, res) => {
-  console.log(req.params)
-  const artistUri = decodeURIComponent(req.params.artist_uri); 
-  const updatedartist = req.body;
-  const dbConnect = dbo.getDb();
-  console.log(artistUri)
-  await dbConnect
-    .collection('music')
-    .updateOne({artist_uris: artistUri}, {$set: updatedartist})
-    .then(result => {
-      if (result.modifiedCount === 0) {
-        return res.status(404).json({message: 'Artista no encontrado'});
-      }
-      res.json(updatedartist).status(200);
-    })
-    .catch(err => res.status(400).send('Error al actualizar el artista'));
+    const artistUri = decodeURIComponent(req.params.artist_uri);
+    const updatedartist = req.body;
+    const dbConnect = dbo.getDb();
+
+    try {
+        const result = await dbConnect
+            .collection('music')
+            .updateOne({ artist_uris: artistUri }, { $set: updatedartist });
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: 'Artista no encontrado' });
+        }
+
+        res.status(200).json(updatedartist);
+    } catch (err) {
+        res.status(400).json({ error: 'Error al actualizar el artista' });
+    }
 });
 
 router.delete('/:artist_uri', async (req, res) => {
-  const artistUri = decodeURIComponent(req.params.artist_uri);
-  const dbConnect = dbo.getDb();
-  console.log("aqui3")
+    const artistUri = decodeURIComponent(req.params.artist_uri);
+    const dbConnect = dbo.getDb();
 
-  try {
-    const result = await dbConnect.collection('music').deleteOne({ artist_uri: artistUri });
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Álbum no encontrado' });
+    try {
+        const result = await dbConnect.collection('music').deleteOne({ artist_uri: artistUri });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'Artista no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Artista eliminado correctamente' });
+    } catch (err) {
+        res.status(400).json({ error: 'Error al eliminar el artista' });
     }
-    res.redirect('/api/v1/artists');
-  } catch (err) {
-    res.status(400).send('Error al eliminar el álbum');
-  }
 });
 
-
-
-
 router.get('/:artist_uri/artist', async (req, res) => {
-    const artistUri = decodeURIComponent(req.params.artist_uri); 
+    const artistUri = decodeURIComponent(req.params.artist_uri);
     const dbConnect = dbo.getDb();
-    const artist = await dbConnect
-      .collection('music')
-      .findOne({artist_uri: artistUri})
-      .catch(err => res.status(400).send('Error al buscar el álbum'));
-    if (!artist) {
-      return res.status(404).json({message: 'Álbum no encontrado'});
+
+    try {
+        const artist = await dbConnect
+            .collection('music')
+            .findOne({ artist_uri: artistUri });
+
+        if (!artist) {
+            return res.status(404).json({ message: 'Artista no encontrado' });
+        }
+
+        const artistDetails = {
+            artist_uris: artist.artist_uris,
+            artist_names: artist.artist_names
+        };
+
+        res.status(200).json(artistDetails);
+    } catch (err) {
+        res.status(500).json({ error: 'Error al buscar el artista' });
     }
+});
 
-    const artistDetails = {
-      artist_uris: artist.artist_uris,
-      artist_names: artist.artist_names
-
-    };
-    res.json(artistDetails).status(200);
-  });
-
-  router.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     let newartist = req.body; 
-    console.log(newartist);
 
     if (typeof newartist.artist_names === 'string') {
         newartist.artist_names = newartist.artist_names.split(',').map(name => name.trim());
@@ -136,32 +136,10 @@ router.get('/:artist_uri/artist', async (req, res) => {
     const dbConnect = dbo.getDb();
     try {
         const result = await dbConnect.collection('music').insertOne(newartist);
-        res.redirect(req.get('referer'));
+        res.status(201).json({ message: 'Artista añadido correctamente' });
     } catch (err) {
-        res.status(400).send('Error al añadir el álbum');
+        res.status(400).json({ error: 'Error al añadir el artista' });
     }
 });
-
-router.get('/:artist_uri/tracks', async (req, res) => {
-    const artistUri = decodeURIComponent(req.params.artist_uri); 
-    const dbConnect = dbo.getDb();
-    const tracks = await dbConnect
-      .collection('music')
-      .find({artist_uri: artistUri})
-      .toArray()
-      .catch(err => res.status(400).send('Error al buscar el artista'));
-    if (!tracks || tracks.length === 0) {
-      return res.status(404).json({message: 'No se encontro al artista'});
-    }
-
-    const tracksDetails = tracks.map(track => ({
-      track_uri: track.track_uri,
-      track_name: track.track_name,
-
-    }));
-    res.json(tracksDetails).status(200);
-  });
-
-
 
 module.exports = router;

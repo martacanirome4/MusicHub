@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicBrainz Artist Search</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Fondo negro/gris */
+            color: #1DB954; /* Verde Spotify */
+        }
+        .sidebar {
+            width: 200px;
+            height: 100%;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: -200px; /* Oculta la barra lateral inicialmente */
+            transition: left 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .navbar-toggle {
+            background-color: transparent;
+            color: #1DB954;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2000;
+            font-size: 20px;
+        }
+        .navbar-toggle:hover {
+            color: #1ED760;
+        }
+        .sidebar h2 {
+            color: #1DB954;
+            text-align: center;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar ul li a:hover {
+            background-color: #444;
+        }
+        .container {
+            margin-left: 20px;
+            padding: 20px;
+        }
+        .main-content {
+            max-width: 800px;
+            margin: auto;
+            background: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+        pre {
+            background: #f4f4f4;
+            color: #333;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: calc(100% - 22px); /* Full width - padding */
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1ED760;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="header-container">
+            <h2>MusicHub</h2>
+        </div>
+        <ul>
+            <li><a href="/api/v1/">Inicio</a></li>
+            <li><a href="/api/v1/albums">Álbumes</a></li>
+            <li><a href="/api/v1/tracks">Canciones</a></li>
+            <li><a href="/api/v1/artists">Artistas</a></li>
+            <li><a href="/api/v1/chat">Chat</a></li>
+            <li><a href="/api/v1/spotify">Spotify</a></li>
+            <li><a href="/api/v1/musicbrainz">MusicBrainz</a></li>
+        </ul>
+    </div>
+    <button class="navbar-toggle" id="navbar-toggle">&#9776;</button>
+    <div class="container">
+        <div class="main-content">
+            <h1>Obtén información de MusicBrainz de un artista</h1>
+            <form id="search-form">
+                <label for="artist">Introduce el nombre del artista:</label>
+                <input type="text" id="artist-name" name="artist-name" required>
+                <button type="submit">Buscar</button>
+            </form>
+            <div id="artist-info" style="margin-top: 20px;">
+                <!-- Music data will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatXml(xml) {
+            const PADDING = ' '.repeat(2); // set desired indentation
+            const reg = /(>)(<)(\/*)/g;
+            let pad = 0;
+            xml = xml.replace(reg, '$1\r\n$2$3');
+            return xml.split('\r\n').map((node, index) => {
+                let indent = 0;
+                if (node.match(/.+<\/\w[^>]*>$/)) {
+                    indent = 0;
+                } else if (node.match(/^<\/\w/)) {
+                    if (pad !== 0) {
+                        pad -= 1;
+                    }
+                } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+                    indent = 1;
+                } else {
+                    indent = 0;
+                }
+                pad += indent;
+                return PADDING.repeat(pad - indent) + node;
+            }).join('\r\n');
+        }
+
+        document.getElementById('search-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const artistName = document.getElementById('artist-name').value;
+            const response = await fetch(`/api/v1/musicbrainz/search?name=${artistName}`);
+            const xmlData = await response.text();
+            const formattedXml = formatXml(xmlData);
+
+            document.getElementById('artist-info').innerHTML = `<pre>${formattedXml}</pre>`;
+        });
+
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            } else {
+                sidebar.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

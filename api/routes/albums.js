@@ -46,7 +46,7 @@ router.get('/:album_uri', async (req, res) => {
     const next = req.query.next ? parseInt(req.query.next, 1) : 0;
 
     const options = {
-        projection: { _id: 0,  track_uri: 0, track_name: 0, artist_uris: 0, album_artist_uris: 0}
+        projection: { _id: 1,  track_uri: 0, track_name: 0, artist_uris: 0, album_artist_uris: 0}
     };
 
     try {
@@ -62,7 +62,6 @@ router.get('/:album_uri', async (req, res) => {
         }
 
         const nextPage = albums.length === limit ? next + limit : null;
-
         res.status(200).json({ albums, next: nextPage });
     } catch (err) {
         res.status(500).json({ error: 'Error al buscar el álbum' });

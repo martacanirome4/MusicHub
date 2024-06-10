@@ -3,7 +3,7 @@
     event.preventDefault(); // Prevenir el envío del formulario
     const query = document.getElementById('search_query').value; // Obtener el valor de búsqueda
     // Redirigir a la URL correcta con el URI del álbum
-    window.location.href = `/api/v1/albums/${encodeURIComponent(query)}`;
+    window.location.href = `/albums/${encodeURIComponent(query)}`;
 };
 
 document.getElementById('putForm').onsubmit = async function(event) {

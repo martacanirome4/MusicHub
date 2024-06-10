@@ -59,12 +59,12 @@ router.get('/:track_uri', async (req, res) => {
       next = response.data.next;
 
       // Si no se encontraron álbumes, pasar un mensaje
-      let message = tracks.length === 0 ? 'No se encontraron álbumes.' : null;
+      let message = tracks.length === 0 ? 'No se encontraron canciones.' : null;
 
       res.render('tracks', { tracks, next, message });
   } catch (error) {
-      console.error('Error al obtener álbum de la API:', error);
-      res.status(500).send('Error al obtener álbum de la API');
+      console.error('Error al obtener canción de la API:', error);
+      res.status(500).send('Error al obtener canción de la API');
   }
 });
 

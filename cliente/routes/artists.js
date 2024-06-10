@@ -42,5 +42,30 @@ router.post('/', async (req, res) => {
   res.redirect(req.get('referer'));
 }); 
 
+router.get('/:artist_uri', async (req, res) => {
+  const artistUri = encodeURIComponent(req.params.artist_uri);
+  let next = req.query.next ? parseInt(req.query.next, 10) : 0;
+
+  // Construir la URL de la API correctamente
+  let url = `/artists/${artistUri}`;
+  if (next) {
+      url += `?next=${next}`;
+  }
+
+  try {
+      const response = await apiClient.get(url);
+      console.log(response.data)
+      const artists = response.data.artists || [];
+      next = response.data.next;
+
+      // Si no se encontraron álbumes, pasar un mensaje
+      let message = artists.length === 0 ? 'No se encontraron artistas.' : null;
+
+      res.render('artists', { artists, next, message });
+  } catch (error) {
+      console.error('Error al obtener artista de la API:', error);
+      res.status(500).send('Error al obtener artista de la API');
+  }
+});
 
 module.exports = router;

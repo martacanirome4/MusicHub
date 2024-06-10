@@ -53,25 +53,11 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     MAX_RESULTS=10
     ```
 
-4. Carga los datos iniciales en la base de datos MongoDB:
-
-    - Instala las dependencias necesarias (si aún no lo has hecho):
-
-        ```bash
-        npm install mongodb dotenv
-        ```
-
-    - Ejecuta el script desde 'api/setp' para cargar los datos:
-
-        ```bash
-        ./setup_musichub.sh
-        ```
-
-5. Inicia el servidor:
+4. Inicia el servidor:
      ```bash
     npm start
     ```
-7. Disfruta de la API:
+5. Disfruta de la API:
    
     -  Introduce la siguiente URL en tu navegador y navega por sus recursos
 

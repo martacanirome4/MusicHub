@@ -43,5 +43,30 @@ router.post('/', async (req, res) => {
 }); 
 
 
+router.get('/:track_uri', async (req, res) => {
+  const trackUri = encodeURIComponent(req.params.track_uri);
+  let next = req.query.next ? parseInt(req.query.next, 10) : 0;
+
+  // Construir la URL de la API correctamente
+  let url = `/tracks/${trackUri}`;
+  if (next) {
+      url += `?next=${next}`;
+  }
+
+  try {
+      const response = await apiClient.get(url);
+      const tracks = response.data.tracks || [];
+      next = response.data.next;
+
+      // Si no se encontraron álbumes, pasar un mensaje
+      let message = tracks.length === 0 ? 'No se encontraron álbumes.' : null;
+
+      res.render('tracks', { tracks, next, message });
+  } catch (error) {
+      console.error('Error al obtener álbum de la API:', error);
+      res.status(500).send('Error al obtener álbum de la API');
+  }
+});
+
 
 module.exports = router;

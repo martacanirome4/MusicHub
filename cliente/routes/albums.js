@@ -74,4 +74,11 @@ router.put('/:album_uri', async (req, res) => {
     res.redirect(req.get('referer'));
 });
 
+router.delete('/:album_uri', async (req, res) => {
+    const albumUri = decodeURIComponent(req.params.album_uri);
+    const url = `/albums/${albumUri}`;
+    await apiClient.delete(url);
+    res.redirect(req.get('referer'));
+});
+
 module.exports = router;

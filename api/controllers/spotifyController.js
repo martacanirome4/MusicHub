@@ -3,10 +3,10 @@ const axios = require('axios');
 const getSpotifyToken = require('../utils/spotifyAuth');
 
 const searchTracks = async (req, res) => {
-  const query = req.query.q;
+  const query = req.query.name;
 
   if (!query) {
-    return res.status(400).send('Query is required');
+    return res.status(400).json({ error: 'Query parameter "name" is required' });
   }
 
   try {
@@ -17,17 +17,26 @@ const searchTracks = async (req, res) => {
       }
     });
 
-    res.json(response.data.tracks.items.map(track => ({
+    const tracks = response.data.tracks.items.map(track => ({
       name: track.name,
       id: track.id,
       artists: track.artists.map(artist => artist.name),
       album: track.album.name,
       release_date: track.album.release_date,
       preview_url: track.preview_url
-    })));
+    }));
+
+    res.json(tracks);
   } catch (error) {
     console.error('Error searching tracks:', error);
-    res.status(500).send('Error searching tracks on Spotify');
+
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data });
+    } else if (error.request) {
+      res.status(500).json({ error: 'No response from Spotify' });
+    } else {
+      res.status(500).json({ error: 'Error searching tracks on Spotify' });
+    }
   }
 };
 

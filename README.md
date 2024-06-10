@@ -16,10 +16,11 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 
 ## Contenido del Proyecto
 
-- **Archivo OpenAPI con la descripción del servicio** --> '/api/schema/musichub.yaml'.
 - **Interfaz REST para la API** --> '/api',
-- **Base de datos MongoDB** --> '/dataset/musichub_dataset.json' y '/dataset/musichub_dataset.csv'
-- **Script para cargar los datos iniciales en la base de datos** --> '/setup/setup_musichub.sh'.
+- **Archivo OpenAPI con la descripción del servicio** --> '/api/schema/musichub.yaml',
+- **Interfaz de usuario para cliente** --> '/cliente',
+- **Base de datos MongoDB** --> '/dataset/musichub_dataset.json' y '/dataset/musichub_dataset.csv',
+- **Script para cargar los datos iniciales en la base de datos** --> '/setup/setup_musichub.sh',
 - **Presentación de la API** --> 'sw-MusicHub.pdf' y  'sw-MusicHub.pptx' en el directorio raíz.
 
 ## Requisitos
@@ -75,24 +76,32 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     -  Introduce la siguiente URL en tu navegador y navega por sus recursos
 
         ```bash
-        http://localhost:3000/api/v1
+        http://localhost:3003/
         ```
 
-### Endpoints Principales
+### Endpoints Principales de la API
 
 - **Álbumes**: `/api/v1/albums`
+- **Artistas**: `/api/v1/artists`
 - **Canciones**: `/api/v1/tracks`
-- **Spotify**: `/api/v1/spotify`
-- **MusicBrainz**: `/api/v1/musicbrainz`
-- **Chat**: `/api/v1/chat`
 
-### Ejemplo de Solicitud
+### Ejemplos de Solicitudes
 
-Busca un artista en MusicBrainz:
+Mostrar los álbumes, con paginación:
 ```bash
-GET /api/v1/musicbrainz/search?name=artista
+GET http://localhost:3000/api/v1/albums
 
 ```
+Buscar una canción de Spotify:
+```bash
+GET http://localhost:3000/api/v1/spotify/search?name=supercalifragilisticexpialidocious
+
+```
+Obtener metadata de un artista de MusicBrainz:
+```bash
+GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
+```
+
 
 ## Temática
 Música

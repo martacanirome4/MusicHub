@@ -100,6 +100,20 @@
         button:hover {
             background-color: #1ED760;
         }
+        .result-container {
+            margin-top: 20px;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            overflow: auto;
+        }
+        .result-container pre {
+            background-color: #1f1f1f;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
     </style>
 </head>
 <body>
@@ -126,8 +140,9 @@
                 <input type="text" id="artist-name" name="artist-name" required>
                 <button type="submit">Buscar</button>
             </form>
-            <div id="artist-info" style="margin-top: 20px;">
-                <!-- Music data will be displayed here -->
+            <div class="result-container">
+                <!-- Aquí se mostrarán los datos de MusicBrainz -->
+                <pre id="artist-info"></pre>
             </div>
         </div>
     </div>
@@ -163,9 +178,11 @@
             const xmlData = await response.text();
             const formattedXml = formatXml(xmlData);
 
-            document.getElementById('artist-info').innerHTML = `<pre>${formattedXml}</pre>`;
+            // Mostrar los datos formateados en el elemento con id 'artist-info'
+            document.getElementById('artist-info').innerHTML = formattedXml;
         });
 
+        // Evento click del botón de la barra lateral
         document.getElementById('navbar-toggle').addEventListener('click', function() {
             var sidebar = document.getElementById('sidebar');
             if (sidebar.classList.contains('show')) {

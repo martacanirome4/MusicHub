@@ -1,4 +1,4 @@
-// file: api/routes/index.js
+// file: api/routes/musicbrainz.js
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
@@ -22,7 +22,12 @@ router.get('/artist/:mbid', async (req, res, next) => {
 
 router.get('/search', async (req, res, next) => {
     const artistName = req.query.name;
-    const url = `http://musicbrainz.org/ws/2/artist/?query=artist:${artistName}&fmt=xml`;
+
+    if (!artistName) {
+        return res.status(400).json({ error: 'Query parameter "name" is required' });
+    }
+
+    const url = `http://musicbrainz.org/ws/2/artist/?query=artist:${encodeURIComponent(artistName)}&fmt=xml`;
 
     try {
         const response = await axios.get(url);

@@ -35,15 +35,10 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
 1. Clona este repositorio:
     ```bash
     git clone https://github.com/martacanirome4/MusicHub.git
-    cd MusicHub/api
+    cd MusicHub/
     ```
 
-2. Instala las dependencias:
-    ```bash
-    npm install
-    ```
-
-3. Configura las variables de entorno en un archivo `.env`:
+3. Configura las variables de entorno en un archivo `.env` de 'api':
     ```env
     BASE_URI=/api/v1
     SPOTIFY_CLIENT_ID=tu-spotify-client-id
@@ -58,21 +53,21 @@ MusicHub es una API RESTful con temática musical desarrollada con Node.js y Exp
     npm install
     npm start
     ```
-4. Inicia el cliente desde 'cliente':
-     ```bash
+4. Inicia el cliente desde:
+   Crea otro archivo '/.env' en '/cliente' y asegúrate de lo siguiente:
+   ```bash
+   BASE_URI=/
+   ```
+   Instalas las dependencias e inicia el lado del cliente:
+    ```bash
     npm install
     npm start
     ```
 5. Disfruta de la API:
-    - En '/cliente/.env' asegúrate de lo siguiente:
-       ```bash
-       BASE_URI=/
-       ```
-    -  Introduce la siguiente URL en tu navegador y navega por sus recursos
-
-        ```bash
-        http://localhost:3003/
-        ```
+   Introduce la siguiente URL en tu navegador y navega por sus recursos
+   ```bash
+   http://localhost:3003/
+   ```
 
 ### Endpoints Principales de la API
 

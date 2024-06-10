@@ -77,4 +77,11 @@ router.put('/:track_uri', async (req, res) => {
   res.redirect(req.get('referer'));
 });
 
+router.delete('/:track_uri', async (req, res) => {
+  const trackUri = decodeURIComponent(req.params.track_uri);
+  const url = `/tracks/${trackUri}`;
+  await apiClient.delete(url);
+  res.redirect(req.get('referer'));
+});
+
 module.exports = router;

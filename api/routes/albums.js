@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 
     const options = {
-        projection: { _id: 0,  track_uri: 0, track_name: 0, artist_uris: 0, album_artist_uris: 0}
+        projection: { _id: 1,  track_uri: 0, track_name: 0, artist_uris: 0, album_artist_uris: 0}
     };
   
     const dbConnect = dbo.getDb();
@@ -29,6 +29,8 @@ router.get('/', async (req, res) => {
             .toArray();
   
         next = results.length > 0 ? results[results.length - 1]._id : null;
+        console.log('hola')
+        console.log(next)
 
         res.json({ albums: results, next: next });
     } catch (err) {

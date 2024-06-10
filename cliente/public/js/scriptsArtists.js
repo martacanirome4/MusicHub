@@ -12,7 +12,7 @@ navbarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('show');
 });
 
-/*document.getElementById('putForm').onsubmit = async function(event) {
+document.getElementById('putForm').onsubmit = async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario
 
     const artistUri = document.getElementById('artist_put').value; // URI actual del álbum
@@ -26,7 +26,7 @@ navbarToggle.addEventListener('click', () => {
     };
 
     try {
-        const response = await fetch(`/api/v1/artists/${artistUri}`, {
+        const response = await fetch(`/artists/${artistUri}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,9 +35,9 @@ navbarToggle.addEventListener('click', () => {
         });
         console.log(artistUri)
         // Redirigir a la página de álbumes después de eliminar
-        window.location.href = '/api/v1/artists';
+        window.location.href = '/artists';
     } catch (error) {
         console.error('Error:', error);
         // Manejar el error si la solicitud falla
     }
-};*/
+};

@@ -130,17 +130,13 @@ GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
 
 ---
 
-## 📊 Estadísticas de GitHub
-
-![Marta's GitHub stats](https://github-readme-stats.vercel.app/api?username=martacanirome4&show_icons=true&theme=tokyonight)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=martacanirome4&layout=compact&theme=tokyonight)
-
----
-
 ## 👥 Miembros del Equipo
 
-- Dulibeth Medina  
-- Xavier Alexander Mora  
-- Guillermo Woivre  
+- Dulibeth Medina
+[@Dulibeth](https://github.com/Dulibeth) – GitHub 2023
+- Xavier Alexander Mora
+[@XMoraP](https://github.com/XMoraP) – GitHub 2023
+- Guillermo Woivre
+[@GWoivre](https://github.com/GWoivre) – GitHub 2023
 - Marta Canino Romero  
 [@martacanirome4](https://github.com/martacanirome4) – GitHub 2023

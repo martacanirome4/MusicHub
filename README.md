@@ -1,6 +1,11 @@
 # 🎧 MusicHub API
 
 ![Version](https://img.shields.io/badge/version-2.0.0-yellow)
+![Node.js](https://img.shields.io/badge/Node.js-v14%2B-green)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
+![Spotify API](https://img.shields.io/badge/API-Spotify-blue)
+![OpenAI](https://img.shields.io/badge/OpenAI-ChatBot-purple)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 **API RESTful para explorar, buscar y disfrutar información musical**  
 MusicHub combina el poder de **Node.js**, **MongoDB**, **Spotify**, **MusicBrainz** y **OpenAI** para ofrecer una experiencia musical interactiva y divertida, con una interfaz inspirada en Spotify.
@@ -36,12 +41,18 @@ MusicHub es una plataforma para **explorar y gestionar música** a través de m�
 
 ---
 
-## 🛠️ Requisitos
+## 🛠️ Tecnologías Utilizadas
 
-- Node.js v14+
-- MongoDB
-- Cuenta de Spotify Developers
-- Cuenta de OpenAI
+| Tecnología     | Uso                               |
+|----------------|-----------------------------------|
+| Node.js        | Backend (API REST)                |
+| Express        | Servidor web                      |
+| MongoDB        | Base de datos                     |
+| Spotify API    | Datos musicales                   |
+| MusicBrainz    | Metadatos musicales               |
+| OpenAI API     | ChatBot musical                   |
+| React/Vite     | Interfaz de usuario               |
+| YAML/OpenAPI   | Documentación de la API           |
 
 ---
 
@@ -119,8 +130,10 @@ GET http://localhost:3000/api/v1/musicbrainz/search?name=adele
 
 ---
 
-## 🎶 Temática
-Música
+## 📊 Estadísticas de GitHub
+
+![Marta's GitHub stats](https://github-readme-stats.vercel.app/api?username=martacanirome4&show_icons=true&theme=tokyonight)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=martacanirome4&layout=compact&theme=tokyonight)
 
 ---
 

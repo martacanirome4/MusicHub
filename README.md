@@ -7,10 +7,12 @@
 ![OpenAI](https://img.shields.io/badge/OpenAI-ChatBot-purple)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-https://img.shields.io/github/last-commit/martacanirome4/MusicHub
-
 **API RESTful para explorar, buscar y disfrutar información musical**  
 MusicHub combina el poder de **Node.js**, **MongoDB**, **Spotify**, **MusicBrainz** y **OpenAI** para ofrecer una experiencia musical interactiva y divertida, con una interfaz inspirada en Spotify.
+
+[![CI](https://img.shields.io/github/actions/workflow/status/martacanirome4/MusicHub/ci.yml?branch=main)](https://github.com/martacanirome4/MusicHub/actions)
+[![Last commit](https://img.shields.io/github/last-commit/martacanirome4/MusicHub)](https://github.com/martacanirome4/dark-matter-api/commits/main)
+[![License](https://img.shields.io/github/license/martacanirome4/MusicHub)](LICENSE)
 
 ---
 

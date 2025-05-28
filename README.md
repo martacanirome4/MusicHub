@@ -10,7 +10,6 @@
 **API RESTful para explorar, buscar y disfrutar información musical**  
 MusicHub combina el poder de **Node.js**, **MongoDB**, **Spotify**, **MusicBrainz** y **OpenAI** para ofrecer una experiencia musical interactiva y divertida, con una interfaz inspirada en Spotify.
 
-[![CI](![License](https://img.shields.io/badge/license-MIT-lightgrey)branch=main)]
 [![Last commit](https://img.shields.io/github/last-commit/martacanirome4/MusicHub)](https://github.com/martacanirome4/MusicHub/commits/main)
 
 ---

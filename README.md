@@ -12,7 +12,6 @@ MusicHub combina el poder de **Node.js**, **MongoDB**, **Spotify**, **MusicBrain
 
 [![CI](https://img.shields.io/github/actions/workflow/status/martacanirome4/MusicHub/ci.yml?branch=main)](https://github.com/martacanirome4/MusicHub/actions)
 [![Last commit](https://img.shields.io/github/last-commit/martacanirome4/MusicHub)](https://github.com/martacanirome4/dark-matter-api/commits/main)
-[![License](https://img.shields.io/github/license/martacanirome4/MusicHub)](LICENSE)
 
 ---
 
